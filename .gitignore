@@ -1,0 +1,5 @@
+*.tfstate.backup
+.terraform
+scripts/bootstrap/genconf/*
+node_modules
+config.json

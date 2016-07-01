@@ -1,0 +1,11 @@
+[template]
+src = "config.yaml.tmpl"
+dest = "genconf/config.yaml"
+keys = [
+  "dcos/bootstrap/url",
+  "dcos/cluster/name",
+  "dcos/exhibitor/bucket",
+  "dcos/exhibitor/prefix",
+  "dcos/exhibitor/address",
+  "dcos/aws/region"
+]

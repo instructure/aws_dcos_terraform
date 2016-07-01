@@ -1,0 +1,14 @@
+{
+  "name": "ecr_writer",
+  "version": "1.0.0",
+  "description": "Lambda for writing ECR creds to s3",
+  "main": "write_cred.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "tar-stream": "^1.5.2"
+  }
+}
