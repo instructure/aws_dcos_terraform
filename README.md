@@ -177,8 +177,24 @@ The three current places this technique are used are:
 # Notes
 
 ### Docker Notes
+
 Currently, the `dcos_generate_config.sh` script only runs in linux and itself makes use of docker. To make this
 work on OSX, the script that builds the bootstrap package runs a priviliged docker image and
 requires that you use a docker setup where the host can properly use volumes in arbitary locations. On OSX, this means
 using either Docker For Mac of dinghy, on linux, it should just work
 
+### Roadmap
+
+- Add in a VPC module for a basic VPC setup
+- Create a 'root' module that replicates almost everything the default DC/OS cloudformation does
+- Add in Cloudwatch monitoring
+- Add in more machine options, such as spot block and spot fleet support
+
+### Contributing
+
+All contributions are welcome! To contribute:
+
+1. Open an issue dicsussing any major changes you want to make (for smaller changes, feel free to skip this)
+2. Fork the project
+3. Make your changes and run the validate.sh script to ensure it doesn't have any errors
+4. Open a pull request
