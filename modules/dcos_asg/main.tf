@@ -54,7 +54,7 @@ resource "aws_autoscaling_group" "dcos_asg" {
 }
 
 resource "template_file" "user_data" {
-  template = "${coalesce(var.cloud_config_path, file("${path.module}/files/user_data/cloud-config.yaml.tpl"))}"
+  template = "${file(coalesce(var.cloud_config_path, format("%s/files/user_data/cloud-config.yaml.tpl", path.module)))}"
   vars {
     bootstrap_url = "${var.dcos_install_url}"
     role = "${var.dcos_role}"
