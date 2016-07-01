@@ -1,7 +1,7 @@
 variable "namespace" {
   description = "the namespace for the repo"
 }
-variable "names" {
+variable "repo_names" {
   description = "comma seperated list of repo names, under the namespace"
 }
 variable "account_id" {
@@ -10,7 +10,7 @@ variable "account_id" {
 variable "users" {
   description = "a comma seperated list of users to allow push access"
 }
-variable "pull_principal" {
+variable "push_principal" {
   default = ""
-  description = "allows for specifiy a full IAM principal"
+  description = "allows for specifiy a wildcard of who can push"
 }

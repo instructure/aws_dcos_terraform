@@ -17,16 +17,22 @@ resource "aws_iam_role" "ecr_cred_writer_role" {
 EOF
 }
 
+resource "template_file" "lambda_conf" {
+  template = <<EOF
+{
+  "targetBucket": "${var.docker_cred_bucket}",
+  "targetKey": "${coalesce(var.docker_cred_key, format("docker/%s/creds.tar.gz", var.env_name))}",
+  "registryId": "${var.registry_id}"
+}
+EOF
+}
+
 resource "null_resource" "inject_build" {
-  count = "${var.use_builtin_lambda}"
   triggers {
-    env_name = "${var.env_name}"
-    output_name = "${var.lambda_package_name}"
-    s3_bucket = "${var.docker_cred_bucket}"
-    s3_path = "${coalesce(var.docker_cred_key, format("docker/%s/creds.tar.gz", var.env_name))}"
+    config_val = "${template_file.lambda_conf.rendered}"
   }
   provisioner "local-exec" {
-    command = "${path.module}/files/ecr_writer/build_lambda.sh ${var.env_name} ${var.registry_id} ${var.docker_cred_bucket} ${coalesce(var.docker_cred_key, format("docker/%s/creds.tar.gz", var.env_name))} ${var.lambda_package_name}"
+    command = "${coalesce(var.lambda_build_script, format("%s/files/ecr_writer/build_docker.sh", path.module))} ${var.env_name} '${template_file.lambda_conf.rendered}' ${format("s3://%s/docker/%s/%s", var.docker_cred_bucket, var.env_name, base64sha256(template_file.lambda_conf.rendered))}"
   }
 }
 
@@ -58,12 +64,14 @@ EOF
 
 resource "aws_lambda_function" "ecr_cred_writer" {
   depends_on = ["null_resource.inject_build"]
-  filename = "${coalesce(var.lambda_package, format("%s/files/ecr_writer/%s", path.module, var.lambda_package_name))}"
+  s3_bucket = "${var.docker_cred_bucket}"
+  s3_key = "docker/${var.env_name}/${base64sha256(template_file.lambda_conf.rendered)}"
+  # work around https://github.com/hashicorp/terraform/issues/5673
+  s3_object_version = "null"
   function_name = "${var.env_name}-ecr-cred-writer"
   handler = "${var.handler_name}"
   role = "${coalesce(var.lambda_role, aws_iam_role.ecr_cred_writer_role.arn)}"
   runtime = "${var.runtime}"
-  source_code_hash = "${base64sha256(file(coalesce(var.lambda_package, format("%s/files/ecr_writer/%s", path.module, var.lambda_package_name))))}"
 }
 
 resource "aws_cloudwatch_event_rule" "write_creds_tick" {

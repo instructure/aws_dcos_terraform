@@ -7,7 +7,7 @@ resource "null_resource" "build_upload" {
     boostrap_bucket = "${var.bootstrap_bucket}"
   }
   provisioner "local-exec" {
-    command = "AWS_REGION=${var.aws_region} ${coalesce(var.build_script_path, format("%s/files/bootstrap/build_upload.sh", path_module))} ${var.env_name} ${var.exhibitor_bucket} ${var.env_name} ${var.master_elb_dns} ${format("http://%s.s3.amazonaws.com/%s", var.bootstrap_bucket, var.env_name)} ${format("s3://%s/%s", var.bootstrap_bucket, var.env_name)}"
+    command = "AWS_REGION=${var.aws_region} ${coalesce(var.build_script_path, format("%s/files/bootstrap/build_upload.sh", path.module))} ${var.env_name} ${var.exhibitor_bucket} ${var.env_name} ${var.master_elb_dns} ${format("http://%s.s3.amazonaws.com/%s", var.bootstrap_bucket, var.env_name)} ${format("s3://%s/%s", var.bootstrap_bucket, var.env_name)}"
   }
 }
 

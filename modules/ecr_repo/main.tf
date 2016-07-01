@@ -1,8 +1,12 @@
 resource "aws_ecr_repository" "repo" {
-  name = "${format("%s/%s", var.namespace, element(split(",", var.names), count.index))}"
+  name = "${format("%s/%s", var.namespace, element(split(",", var.repo_names), count.index))}"
   count = "${length(split(",", var.repo_names))}"
 }
 
+# the monstorsity of a interpolation looks really bad... but its actually not too horrible
+# if push_principal is defined, we wrap it in quotes and the replace does nothing
+# if it isn't define, we still wrap in quotes but then replace empty quotes with an empty string
+# so we fall back to users, in which case we split, format in an ARN, and rejoin with comma
 resource "aws_ecr_repository_policy" "ecr_access" {
   count = "${length(split(",", var.repo_names))}"
   repository = "${element(aws_ecr_repository.repo.*.name, count.index)}"
@@ -23,11 +27,11 @@ resource "aws_ecr_repository_policy" "ecr_access" {
       ]
     },
     {
-      "Sid": "allow_specific_pull",
+      "Sid": "allow_specific_push",
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          ${join(",", formatlist("\"arn:aws:iam::${var.account_id}:user/%s\"", compact(concat(var.pull_principal, split(",", var.users)))))}
+          ${coalesce(replace(format("\"%s\"", var.push_principal), "\"\"", ""), join(", ", formatlist("\"arn:aws:iam::${var.account_id}:user/%s\"", split(",", var.users))))}
         ]
       },
       "Action": [

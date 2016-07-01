@@ -30,7 +30,6 @@ your needs, but will probably want to consider:
 ### Prereqs:
 - Be famaliar with terraform
 - have docker installed with proper volumes support (see `Docker Notes` below)
-- have npm installed (see `ECR Lambda` for details)
 - have a VPC provisioned you want to deploy in
 
 ### Create the terraform
@@ -96,8 +95,6 @@ module "dcos_core" {
   private_subnets = "${var.private_subnets}"
   bootstrap_bucket = "${module.dcos_region.bootstrap_bucket}"
   exhibitor_bucket = "${module.dcos_region.exhibitor_bucket}"
-  # just reuse the boostrap bucket for the work bucket
-  work_bucket = "${module.dcos_region.bootstrap_bucket}"
   key_name = "${var.key_name}"
   region_azs = "${var.region_azs}"
 }
@@ -125,7 +122,7 @@ module "ecr" {
   # we reuse this bucket for also storing docker creds
   docker_cred_bucket = "${module.dcos_region.bootstrap_bucket}"
   namespace = "${var.namespace}"
-  names = "${var.repo_names}"
+  repo_names = "${var.repo_names}"
   account_id = "${var.account_id}"
   users = "${var.allowed_users}"
 }
@@ -174,7 +171,7 @@ be able to:
 The three current places this technique are used are:
 
 - `files/bootstrap/build_upload.sh`, 'dcos_bootstrap' call this script to build and upload the DC/OS package, set `build_script_path` to override
-- `files/ecr_writer`, contains the lambda function used in `ecr_cred_lambda`, to override this, you need to provide `lambda_package` with a path to a zip file containing a lambda function, also set `use_builtin_lambda` to 0 and other relevant options
+- `files/ecr_writer/build_docker.sh`, gets called to build the lambda function used in `ecr_cred_lambda` and upload it to s3, to override this, you need to provide `lambda_package_path` with a script that uploads a lambda package the specified s3 path
 - `files/user_data/cloud-config.yaml.tpl`, `dcos_asg` and `dcos_asg_spot` use this tempalte for user data. Set `cloud_config_path` to a custom location to ovverride
 
 # Notes
@@ -185,7 +182,3 @@ work on OSX, the script that builds the bootstrap package runs a priviliged dock
 requires that you use a docker setup where the host can properly use volumes in arbitary locations. On OSX, this means
 using either Docker For Mac of dinghy, on linux, it should just work
 
-### ECR Lambda
-While ECR and lambda is not a hard requirement for DC/OS, deploying any apps pretty much requires some private docker
-repo and getting credentials to a place where mesos can download them (using URIs). This function is written as
-a nodejs module and requires npm to install a few packages in order to to build a tarball

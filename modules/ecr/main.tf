@@ -8,10 +8,10 @@ module "cred_writer" {
 module "repos" {
   source = "../ecr_repo"
   namespace = "${var.namespace}"
-  names = "${var.names}"
+  repo_names = "${var.repo_names}"
   account_id = "${var.account_id}"
   users = "${var.users}"
-  pull_principal = "${var.pull_principal}"
+  push_principal = "${var.push_principal}"
 }
 
 
