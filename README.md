@@ -172,7 +172,7 @@ The three current places this technique are used are:
 
 - `files/bootstrap/build_upload.sh`, 'dcos_bootstrap' call this script to build and upload the DC/OS package, set `build_script_path` to override
 - `files/ecr_writer/build_docker.sh`, gets called to build the lambda function used in `ecr_cred_lambda` and upload it to s3, to override this, you need to provide `lambda_package_path` with a script that uploads a lambda package the specified s3 path
-- `files/user_data/cloud-config.yaml.tpl`, `dcos_asg` and `dcos_asg_spot` use this tempalte for user data. Set `cloud_config_path` to a custom location to ovverride
+- `files/user_data/cloud-config.yaml.tpl`, `dcos_asg` and `dcos_asg_spot` use this template for user data. Set `cloud_config_template` to a custom template to override.
 
 # Notes
 

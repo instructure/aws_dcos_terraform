@@ -61,7 +61,7 @@ variable "elbs" {
 variable "dcos_role" {}
 # the path to a cloud config, if not defined, uses the default template. See the default template for
 # details and use that as a source for customizations
-variable "cloud_config_path" {
+variable "cloud_config_template" {
   default = ""
 }
 # the url to the DCOS package to download

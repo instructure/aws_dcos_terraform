@@ -50,7 +50,7 @@ module "master_asg" {
 
   elbs = "${var.master_internal_lb},${module.master_public_lb.elb}"
   dcos_role = "master"
-  cloud_config_path = "${var.cloud_config_path}"
+  cloud_config_template = "${var.cloud_config_template}"
   dcos_install_url = "${var.dcos_install_url}"
 
   role_arn = "${module.master_role.instance_profile_arn}"

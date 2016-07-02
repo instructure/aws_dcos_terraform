@@ -48,7 +48,7 @@ module "agent_asg" {
 
   elbs = "${module.agent_public_lb.elb}"
   dcos_role = "slave_public"
-  cloud_config_path = "${var.cloud_config_path}"
+  cloud_config_template = "${var.cloud_config_template}"
   dcos_install_url = "${var.dcos_install_url}"
 
   role_arn = "${module.agent_role.instance_profile_arn}"

@@ -44,7 +44,7 @@ module "masters" {
   min_size = "${var.master_count}"
   desired_capacity = "${var.master_count}"
   master_internal_lb = "${module.master_internal_lb.elb}"
-  cloud_config_path = "${var.master_cloud_config_path}"
+  cloud_config_template = "${var.master_cloud_config_template}"
   dcos_install_url = "${module.dcos_bootstrap.dcos_install_url}"
   exhibitor_bucket = "${var.exhibitor_bucket}"
   work_bucket = "${var.bootstrap_bucket}"
@@ -67,7 +67,7 @@ module "agents" {
   max_size = "${var.max_agent_count}"
   min_size = "${var.min_agent_count}"
   desired_capacity = "${var.agent_count}"
-  cloud_config_path = "${var.agent_cloud_config_path}"
+  cloud_config_template = "${var.agent_cloud_config_template}"
   dcos_install_url = "${module.dcos_bootstrap.dcos_install_url}"
   work_bucket = "${var.bootstrap_bucket}"
 }
@@ -90,7 +90,7 @@ module "public_agents" {
   max_size = "${var.max_public_agent_count}"
   min_size = "${var.min_public_agent_count}"
   desired_capacity = "${var.public_agent_count}"
-  cloud_config_path = "${var.public_agent_cloud_config_path}"
+  cloud_config_template = "${var.public_agent_cloud_config_template}"
   dcos_install_url = "${module.dcos_bootstrap.dcos_install_url}"
   work_bucket = "${var.bootstrap_bucket}"
 }

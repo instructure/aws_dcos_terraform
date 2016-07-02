@@ -85,13 +85,13 @@ variable "min_public_agent_count" {
 variable "public_agent_count" {
   default = 2
 }
-variable "master_cloud_config_path" {
+variable "master_cloud_config_template" {
   default = ""
 }
-variable "agent_cloud_config_path" {
+variable "agent_cloud_config_template" {
   default = ""
 }
-variable "public_agent_cloud_config_path" {
+variable "public_agent_cloud_config_template" {
   default = ""
 }
 variable "bootstrap_build_script_path" {
