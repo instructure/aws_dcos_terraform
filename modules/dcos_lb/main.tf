@@ -6,18 +6,19 @@ resource "aws_elb" "lb" {
   security_groups = ["${var.default_security_group}", "${compact(concat(aws_security_group.lb.id, split(",", var.extra_security_groups)))}"]
   // haproxy tcp
   listener {
-    instance_port = 80
+    instance_port = "${var.http_instance_port}"
     instance_protocol = "tcp"
     lb_port = 80
     lb_protocol = "tcp"
   }
   // haproxy https
   listener {
-    instance_port = 443
+    instance_port = "${var.https_instance_port}"
     instance_protocol = "tcp"
     lb_port = 443
     lb_protocol = "tcp"
   }
+  cross_zone_load_balancing = "${var.cross_zone_load_balancing}"
 
   health_check {
     target = "${var.health_check_path}"

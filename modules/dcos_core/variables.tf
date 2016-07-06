@@ -98,3 +98,19 @@ variable "bootstrap_build_script_path" {
   default = ""
   description = "path to a custom build script for building and upload a dcos install package"
 }
+variable "agent_http_instance_port" {
+  default = "8480"
+  description = "from port 80 on the LB, which backend port to hit in the agent ASG"
+}
+variable "agent_https_instance_port" {
+  default = "8443"
+  description = "from port 443 on the LB, which backend port to hit in the agent ASG"
+}
+variable "public_agent_http_instance_port" {
+  default = "80"
+  description = "from port 80 on the LB, which backend port to hit in the public agent ASG"
+}
+variable "public_agent_https_instance_port" {
+  default = "443"
+  description = "from port 443 on the LB, which backend port to hit in the public agent ASG"
+}

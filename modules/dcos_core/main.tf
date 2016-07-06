@@ -70,6 +70,8 @@ module "agents" {
   cloud_config_template = "${var.agent_cloud_config_template}"
   dcos_install_url = "${module.dcos_bootstrap.dcos_install_url}"
   work_bucket = "${var.bootstrap_bucket}"
+  http_instance_port = "${var.agent_http_instance_port}"
+  https_instance_port = "${var.agent_https_instance_port}"
 }
 
 module "public_agents" {
@@ -93,4 +95,6 @@ module "public_agents" {
   cloud_config_template = "${var.public_agent_cloud_config_template}"
   dcos_install_url = "${module.dcos_bootstrap.dcos_install_url}"
   work_bucket = "${var.bootstrap_bucket}"
+  http_instance_port = "${var.public_agent_http_instance_port}"
+  https_instance_port = "${var.public_agent_https_instance_port}"
 }

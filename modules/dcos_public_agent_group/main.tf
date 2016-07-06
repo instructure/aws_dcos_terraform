@@ -5,6 +5,8 @@ module "agent_public_lb" {
   vpc_id = "${var.vpc_id}"
   network = "${var.network}"
   subnets = "${var.elb_subnets}"
+  http_instance_port = "${var.http_instance_port}"
+  https_instance_port = "${var.https_instance_port}"
   internal_lb = "${var.internal_lb}"
   default_security_group = "${var.default_security_group}"
 }

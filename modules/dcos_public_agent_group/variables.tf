@@ -64,4 +64,11 @@ variable "work_bucket" {}
 variable "work_prefix" {
   default = "work"
 }
-
+variable "http_instance_port" {
+  default = "80"
+  description = "from port 80 on the LB, which backend port to hit"
+}
+variable "https_instance_port" {
+  default = "443"
+  description = "from port 443 on the LB, which backend port to hit"
+}
