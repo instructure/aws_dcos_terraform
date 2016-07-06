@@ -1,6 +1,6 @@
-
 resource "aws_iam_role" "master_role" {
   name = "${coalesce(var.role_name, format("%s-dcos-master", var.env_name))}"
+
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -21,6 +21,7 @@ EOF
 resource "aws_iam_role_policy" "master_role_primary" {
   name = "${var.env_name}-master-primary-policy"
   role = "${aws_iam_role.master_role.id}"
+
   policy = <<EOF
 {
   "Version" : "2012-10-17",
@@ -72,6 +73,6 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "master_profile" {
-  name = "${var.env_name}-master-profile"
+  name  = "${var.env_name}-master-profile"
   roles = ["${aws_iam_role.master_role.name}"]
 }

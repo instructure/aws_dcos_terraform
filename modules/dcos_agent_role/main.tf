@@ -1,6 +1,6 @@
-
 resource "aws_iam_role" "agent_role" {
   name = "${coalesce(var.role_name, format("%s-dcos-agent-%s", var.env_name, var.agent_type))}"
+
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -21,6 +21,7 @@ EOF
 resource "aws_iam_role_policy" "agent_role_primary" {
   name = "${var.env_name}-${var.agent_type}-agent-primary-policy"
   role = "${aws_iam_role.agent_role.id}"
+
   policy = <<EOF
 {
   "Version" : "2012-10-17",
@@ -59,6 +60,6 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "agent_profile" {
-  name = "${var.env_name}-${var.agent_type}-agent-profile"
+  name  = "${var.env_name}-${var.agent_type}-agent-profile"
   roles = ["${aws_iam_role.agent_role.name}"]
 }

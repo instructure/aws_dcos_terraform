@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "repo" {
-  name = "${format("%s/%s", var.namespace, element(split(",", var.repo_names), count.index))}"
+  name  = "${format("%s/%s", var.namespace, element(split(",", var.repo_names), count.index))}"
   count = "${length(split(",", var.repo_names))}"
 }
 
@@ -8,8 +8,9 @@ resource "aws_ecr_repository" "repo" {
 # if it isn't define, we still wrap in quotes but then replace empty quotes with an empty string
 # so we fall back to users, in which case we split, format in an ARN, and rejoin with comma
 resource "aws_ecr_repository_policy" "ecr_access" {
-  count = "${length(split(",", var.repo_names))}"
+  count      = "${length(split(",", var.repo_names))}"
   repository = "${element(aws_ecr_repository.repo.*.name, count.index)}"
+
   policy = <<EOF
 {
   "Version": "2008-10-17",
