@@ -176,6 +176,10 @@ The three current places this technique are used are:
 
 # Notes
 
+### Docs
+
+See the `docs/` folder for generated markdown of the inputs and outputs of each module (built using `https://github.com/segmentio/terraform-docs`)
+
 ### Docker Notes
 
 Currently, the `dcos_generate_config.sh` script only runs in linux and itself makes use of docker. To make this
