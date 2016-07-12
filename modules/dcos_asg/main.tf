@@ -34,7 +34,7 @@ resource "aws_autoscaling_group" "dcos_asg" {
   desired_capacity          = "${var.desired_capacity}"
   health_check_type         = "${var.health_check_type}"
   health_check_grace_period = "${var.health_check_grace_period}"
-  load_balancers            = ["${split(",", var.elbs)}"]
+  load_balancers            = ["${compact(split(",", var.elbs))}"]
   launch_configuration      = "${aws_launch_configuration.dcos_lc.name}"
   vpc_zone_identifier       = ["${split(",", var.subnets)}"]
 
