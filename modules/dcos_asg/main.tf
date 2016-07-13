@@ -19,7 +19,8 @@ resource "aws_launch_configuration" "dcos_lc" {
     virtual_name = "ephemeral0"
   }
 
-  user_data = "${template_file.user_data.rendered}"
+  spot_price = "${var.spot_price}"
+  user_data  = "${template_file.user_data.rendered}"
 
   lifecycle {
     create_before_destroy = true
