@@ -38,6 +38,10 @@ output "master_role_id" {
   value = "${module.masters.role_id}"
 }
 
+output "master_instance_profile_arn" {
+  value = "${module.masters.instance_profile_arn}"
+}
+
 output "master_public_lb_dns" {
   value = "${module.masters.public_lb_dns}"
 }
@@ -70,6 +74,10 @@ output "agent_role_id" {
   value = "${module.agents.role_id}"
 }
 
+output "agent_instance_profile_arn" {
+  value = "${module.agents.instance_profile_arn}"
+}
+
 output "agent_lb_dns" {
   value = "${module.agents.lb_dns}"
 }
@@ -100,6 +108,10 @@ output "public_agent_role_arn" {
 
 output "public_agent_role_id" {
   value = "${module.public_agents.role_id}"
+}
+
+output "public_agent_instance_profile_arn" {
+  value = "${module.public_agents.instance_profile_arn}"
 }
 
 output "public_agent_lb_dns" {

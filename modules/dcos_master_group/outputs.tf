@@ -18,6 +18,10 @@ output "role_id" {
   value = "${module.master_role.role_id}"
 }
 
+output "instance_profile_arn" {
+  value = "${module.master_role.instance_profile_arn}"
+}
+
 output "public_lb_dns" {
   value = "${module.master_public_lb.elb_dns}"
 }

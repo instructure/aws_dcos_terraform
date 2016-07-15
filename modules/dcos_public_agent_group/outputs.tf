@@ -18,6 +18,10 @@ output "role_id" {
   value = "${module.agent_role.role_id}"
 }
 
+output "instance_profile_arn" {
+  value = "${module.agent_role.instance_profile_arn}"
+}
+
 output "lb_dns" {
   value = "${module.agent_public_lb.elb_dns}"
 }
