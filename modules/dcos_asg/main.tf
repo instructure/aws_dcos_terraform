@@ -70,9 +70,6 @@ data "template_file" "user_data" {
     role          = "${var.dcos_role}"
   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_security_group" "primary" {
