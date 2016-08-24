@@ -7,7 +7,7 @@ resource "aws_launch_configuration" "dcos_lc" {
 
   # we concat the primary group with the extra groups in the event that no extra security groups are passed,
   # we don't end up with an (invalid) empty array
-  security_groups = ["${var.default_security_group}", "${compact(concat(aws_security_group.primary.id, split(",", var.extra_security_groups)))}"]
+  security_groups = ["${var.default_security_group}", "${compact(concat(list(aws_security_group.primary.id), split(",", var.extra_security_groups)))}"]
 
   root_block_device {
     volume_type = "gp2"
@@ -20,7 +20,7 @@ resource "aws_launch_configuration" "dcos_lc" {
   }
 
   spot_price = "${var.spot_price}"
-  user_data  = "${template_file.user_data.rendered}"
+  user_data  = "${data.template_file.user_data.rendered}"
 
   lifecycle {
     create_before_destroy = true
@@ -62,7 +62,7 @@ resource "aws_autoscaling_group" "dcos_asg" {
   }
 }
 
-resource "template_file" "user_data" {
+data "template_file" "user_data" {
   template = "${coalesce(var.cloud_config_template, file(format("%s/files/user_data/cloud-config.yaml.tpl", path.module)))}"
 
   vars {

@@ -18,7 +18,7 @@ resource "aws_iam_role" "ecr_cred_writer_role" {
 EOF
 }
 
-resource "template_file" "lambda_conf" {
+data "template_file" "lambda_conf" {
   template = <<EOF
 {
   "targetBucket": "${var.docker_cred_bucket}",
@@ -30,11 +30,11 @@ EOF
 
 resource "null_resource" "inject_build" {
   triggers {
-    config_val = "${template_file.lambda_conf.rendered}"
+    config_val = "${data.template_file.lambda_conf.rendered}"
   }
 
   provisioner "local-exec" {
-    command = "${coalesce(var.lambda_build_script, format("%s/files/ecr_writer/build_docker.sh", path.module))} ${var.env_name} '${template_file.lambda_conf.rendered}' ${format("s3://%s/docker/%s/%s", var.docker_cred_bucket, var.env_name, base64sha256(template_file.lambda_conf.rendered))}"
+    command = "${coalesce(var.lambda_build_script, format("%s/files/ecr_writer/build_docker.sh", path.module))} ${var.env_name} '${data.template_file.lambda_conf.rendered}' ${format("s3://%s/docker/%s/%s", var.docker_cred_bucket, var.env_name, base64sha256(data.template_file.lambda_conf.rendered))}"
   }
 }
 
@@ -68,7 +68,7 @@ EOF
 resource "aws_lambda_function" "ecr_cred_writer" {
   depends_on = ["null_resource.inject_build"]
   s3_bucket  = "${var.docker_cred_bucket}"
-  s3_key     = "docker/${var.env_name}/${base64sha256(template_file.lambda_conf.rendered)}"
+  s3_key     = "docker/${var.env_name}/${base64sha256(data.template_file.lambda_conf.rendered)}"
 
   # work around https://github.com/hashicorp/terraform/issues/5673
   s3_object_version = "null"

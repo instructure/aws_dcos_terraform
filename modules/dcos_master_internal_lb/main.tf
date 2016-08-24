@@ -3,7 +3,7 @@ resource "aws_elb" "master_internal_lb" {
   name            = "${var.env_name}-dcos-master-internal"
   subnets         = ["${split(",", var.private_subnets)}"]
   internal        = true
-  security_groups = ["${var.default_security_group}", "${compact(concat(aws_security_group.master_internal_lb.id, split(",", var.extra_security_groups)))}"]
+  security_groups = ["${var.default_security_group}", "${compact(concat(list(aws_security_group.master_internal_lb.id), split(",", var.extra_security_groups)))}"]
 
   // mesos-master
   listener {

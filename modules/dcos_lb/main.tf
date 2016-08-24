@@ -3,7 +3,7 @@ resource "aws_elb" "lb" {
   name            = "${var.env_name}-${var.name}"
   subnets         = ["${split(",", var.subnets)}"]
   internal        = "${var.internal_lb}"
-  security_groups = ["${var.default_security_group}", "${compact(concat(aws_security_group.lb.id, split(",", var.extra_security_groups)))}"]
+  security_groups = ["${var.default_security_group}", "${compact(concat(list(aws_security_group.lb.id), split(",", var.extra_security_groups)))}"]
 
   // haproxy tcp
   listener {
