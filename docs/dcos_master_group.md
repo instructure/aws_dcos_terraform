@@ -35,6 +35,7 @@
 | asg_sec_group |  |
 | role_arn |  |
 | role_id |  |
+| instance_profile_arn |  |
 | public_lb_dns |  |
 | public_lb |  |
 | public_lb_sec_group |  |

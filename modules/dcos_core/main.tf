@@ -19,6 +19,8 @@ module "dcos_bootstrap" {
   source            = "../dcos_bootstrap"
   aws_region        = "${var.aws_region}"
   env_name          = "${var.env_name}"
+  dcos_url          = "${var.dcos_url}"
+  version           = "${var.cluster_version}"
   master_elb_dns    = "${module.master_internal_lb.elb_dns}"
   exhibitor_bucket  = "${var.exhibitor_bucket}"
   bootstrap_bucket  = "${var.bootstrap_bucket}"

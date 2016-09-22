@@ -3,6 +3,8 @@
 set -e
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+dcosDl=${DCOS_URL:-https://downloads.dcos.io/dcos/EarlyAccess/dcos_generate_config.sh}
+
 die () {
   echo >&2 "$@"
   exit 1
@@ -18,7 +20,7 @@ fi
 
 echo "building docker container"
 cd $DIR
-docker build -t dcos_builder --build-arg SOURCE_DIR=${DIR} .
+docker build -t dcos_builder --build-arg SOURCE_DIR=${DIR} --build-arg DCOS_URL=${dcosDl} .
 echo "running docker container to build bootstrap"
 docker run \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \

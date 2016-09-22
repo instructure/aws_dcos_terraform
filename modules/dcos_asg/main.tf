@@ -69,7 +69,6 @@ data "template_file" "user_data" {
     bootstrap_url = "${var.dcos_install_url}"
     role          = "${var.dcos_role}"
   }
-
 }
 
 resource "aws_security_group" "primary" {

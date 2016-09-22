@@ -31,7 +31,6 @@ if [ "$#" -ne 6 ]; then
   die "Usage: ./boostrap.sh cluster_name exhibitor_s3_bucket exhibitor_prefix exhibitor_address bootstrap_url s3_output_loc"
 fi
 
-CLUSTER_NAME=$1
 export DCOS_CLUSTER_NAME=$1
 export DCOS_EXHIBITOR_BUCKET=$2
 export DCOS_EXHIBITOR_PREFIX=$3

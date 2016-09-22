@@ -36,6 +36,7 @@
 | asg_sec_group |  |
 | role_arn |  |
 | role_id |  |
+| instance_profile_arn |  |
 | lb_dns |  |
 | lb |  |
 | lb_sec_group |  |

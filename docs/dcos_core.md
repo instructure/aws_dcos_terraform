@@ -35,6 +35,8 @@
 | master_cloud_config_template |  | `""` | no |
 | agent_cloud_config_template |  | `""` | no |
 | public_agent_cloud_config_template |  | `""` | no |
+| dcos_url | the dcos_generate_config.sh package to use, defaults to https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh, which will be latest dcos version | `"https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh"` | no |
+| cluster_version | A version number of your cluster, bump this if you want to force an upgrade | `"1"` | no |
 | bootstrap_build_script_path | path to a custom build script for building and upload a dcos install package | `""` | no |
 | agent_http_instance_port | from port 80 on the LB, which backend port to hit in the agent ASG | `"8480"` | no |
 | agent_https_instance_port | from port 443 on the LB, which backend port to hit in the agent ASG | `"8443"` | no |
@@ -55,6 +57,7 @@
 | master_asg_sec_group |  |
 | master_role_arn |  |
 | master_role_id |  |
+| master_instance_profile_arn |  |
 | master_public_lb_dns |  |
 | master_public_lb |  |
 | master_public_lb_sec_group |  |
@@ -63,6 +66,7 @@
 | agent_asg_sec_group |  |
 | agent_role_arn |  |
 | agent_role_id |  |
+| agent_instance_profile_arn |  |
 | agent_lb_dns |  |
 | agent_lb |  |
 | agent_lb_sec_group |  |
@@ -71,6 +75,7 @@
 | public_agent_asg_sec_group |  |
 | public_agent_role_arn |  |
 | public_agent_role_id |  |
+| public_agent_instance_profile_arn |  |
 | public_agent_lb_dns |  |
 | public_agent_lb |  |
 | public_agent_lb_sec_group |  |

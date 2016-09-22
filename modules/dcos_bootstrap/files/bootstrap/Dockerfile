@@ -1,7 +1,8 @@
 FROM ubuntu:16.04
 
 ENV CONFD_VERSION  0.11.0
-ENV DCOS_URL https://downloads.dcos.io/dcos/EarlyAccess/dcos_generate_config.sh
+ARG DCOS_URL=https://downloads.dcos.io/dcos/EarlyAccess/dcos_generate_config.sh
+ENV DCOS_URL $DCOS_URL
 ENV DCOS_NAME dcos_generate_config.sh
 
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \

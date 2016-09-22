@@ -1,5 +1,5 @@
 *.tfstate.backup
 .terraform
-scripts/bootstrap/genconf/*
+dcos_bootstrap/files/bootstrap/genconf/*
 node_modules
 config.json

@@ -126,6 +126,16 @@ variable "public_agent_cloud_config_template" {
   default = ""
 }
 
+variable "dcos_url" {
+  description = "the dcos_generate_config.sh package to use, defaults to https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh, which will be latest dcos version"
+  default     = "https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh"
+}
+
+variable "cluster_version" {
+  description = "A version number of your cluster, bump this if you want to force an upgrade"
+  default     = "1"
+}
+
 variable "bootstrap_build_script_path" {
   default     = ""
   description = "path to a custom build script for building and upload a dcos install package"
