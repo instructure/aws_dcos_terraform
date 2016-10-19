@@ -26,6 +26,9 @@
 | cloud_config_template | the path to a cloud config, if not defined, uses the default template. Set a custom template by providing the text, see the source template for an example | `""` | no |
 | dcos_install_url | the url to the DCOS package to download | - | yes |
 | spot_price | set a spot price to create a spot ASG | `""` | no |
+| asg_wait_time | number of seconds to wait for a lifecycle hook for mesos to install | `360` | no |
+| override_asg_name | override the name of the ASG, which is useful for creating stable names to use with lifecycle hooks or other automation | `""` | no |
+| override_launch_hook_name | override the name of the hook used for initial lifecycle hooks, useful for automating with proper hooks | `""` | no |
 
 ## Outputs
 

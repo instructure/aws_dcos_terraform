@@ -103,3 +103,18 @@ variable "spot_price" {
   default     = ""
   description = "set a spot price to create a spot ASG"
 }
+
+variable "asg_wait_time" {
+  default     = 360
+  description = "number of seconds to wait for a lifecycle hook for mesos to install"
+}
+
+variable "override_asg_name" {
+  default     = ""
+  description = "override the name of the ASG, which is useful for creating stable names to use with lifecycle hooks or other automation"
+}
+
+variable "override_launch_hook_name" {
+  default     = ""
+  description = "override the name of the hook used for initial lifecycle hooks, useful for automating with proper hooks"
+}

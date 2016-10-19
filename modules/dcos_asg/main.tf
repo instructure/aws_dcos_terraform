@@ -29,7 +29,7 @@ resource "aws_launch_configuration" "dcos_lc" {
 
 resource "aws_autoscaling_group" "dcos_asg" {
   availability_zones        = ["${formatlist("%s%s", var.aws_region, split(",", var.region_azs))}"]
-  name                      = "${var.env_name}-${var.name}"
+  name                      = "${coalesce(var.override_asg_name, format("%s-%s", var.env_name, var.name))}"
   max_size                  = "${var.max_size}"
   min_size                  = "${var.min_size}"
   desired_capacity          = "${var.desired_capacity}"
@@ -38,6 +38,13 @@ resource "aws_autoscaling_group" "dcos_asg" {
   load_balancers            = ["${compact(split(",", var.elbs))}"]
   launch_configuration      = "${aws_launch_configuration.dcos_lc.name}"
   vpc_zone_identifier       = ["${split(",", var.subnets)}"]
+
+  initial_lifecycle_hook {
+    name                 = "${coalesce(var.override_launch_hook_name, format("%s-%s-launch", var.env_name, var.name))}"
+    default_result       = "CONTINUE"
+    heartbeat_timeout    = "${var.asg_wait_time}"
+    lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
+  }
 
   tag {
     key                 = "Env"
