@@ -9,6 +9,7 @@ module "agent_public_lb" {
   https_instance_port    = "${var.https_instance_port}"
   internal_lb            = "${var.internal_lb}"
   default_security_group = "${var.default_security_group}"
+  idle_timeout           = "${var.idle_timeout}"
 }
 
 resource "aws_security_group_rule" "allow_all_http" {

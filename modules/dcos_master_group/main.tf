@@ -8,6 +8,7 @@ module "master_public_lb" {
   internal_lb            = false
   default_security_group = "${var.default_security_group}"
   health_check_path      = "HTTP:5050/health"
+  idle_timeout           = "${var.idle_timeout}"
 }
 
 resource "aws_security_group_rule" "allow_all_http" {

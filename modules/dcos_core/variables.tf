@@ -160,3 +160,18 @@ variable "public_agent_https_instance_port" {
   default     = "443"
   description = "from port 443 on the LB, which backend port to hit in the public agent ASG"
 }
+
+variable "master_idle_timeout" {
+  default     = 60
+  description = "The number of seconds before timing out idle sockets for master ELB"
+}
+
+variable "agent_idle_timeout" {
+  default     = 60
+  description = "The number of seconds before timing out idle sockets for agent ELB"
+}
+
+variable "public_agent_idle_timeout" {
+  default     = 60
+  description = "The number of seconds before timing out idle sockets for public agent ELB"
+}

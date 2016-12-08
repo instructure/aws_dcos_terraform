@@ -22,6 +22,7 @@ resource "aws_elb" "lb" {
   }
 
   cross_zone_load_balancing = "${var.cross_zone_load_balancing}"
+  idle_timeout              = "${var.idle_timeout}"
 
   health_check {
     target              = "${var.health_check_path}"

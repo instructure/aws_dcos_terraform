@@ -51,3 +51,8 @@ variable "cross_zone_load_balancing" {
   default     = true
   description = "enable cross zone load balancing"
 }
+
+variable "idle_timeout" {
+  default     = 60
+  description = "The number of seconds before timing out idle sockets"
+}

@@ -9,6 +9,7 @@ module "agent_internal_lb" {
   https_instance_port    = "${var.https_instance_port}"
   internal_lb            = true
   default_security_group = "${var.default_security_group}"
+  idle_timeout           = "${var.idle_timeout}"
 }
 
 module "agent_role" {

@@ -50,6 +50,7 @@ module "masters" {
   dcos_install_url       = "${module.dcos_bootstrap.dcos_install_url}"
   exhibitor_bucket       = "${var.exhibitor_bucket}"
   work_bucket            = "${var.bootstrap_bucket}"
+  idle_timeout           = "${var.master_idle_timeout}"
 }
 
 module "agents" {
@@ -74,6 +75,7 @@ module "agents" {
   work_bucket            = "${var.bootstrap_bucket}"
   http_instance_port     = "${var.agent_http_instance_port}"
   https_instance_port    = "${var.agent_https_instance_port}"
+  idle_timeout           = "${var.agent_idle_timeout}"
 }
 
 module "public_agents" {
@@ -99,4 +101,5 @@ module "public_agents" {
   work_bucket            = "${var.bootstrap_bucket}"
   http_instance_port     = "${var.public_agent_http_instance_port}"
   https_instance_port    = "${var.public_agent_https_instance_port}"
+  idle_timeout           = "${var.public_agent_idle_timeout}"
 }
