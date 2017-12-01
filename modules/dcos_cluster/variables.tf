@@ -1,75 +1,83 @@
-# the aws region
-variable "aws_region" {}
+variable "region" {}
 
-# the name of the environment
-variable "env_name" {}
+variable "cluster_name" {
+  description = "the name of the environment"
+}
 
-# the id of the vpc
 variable "vpc_id" {}
 
-# the cidr of your vpc
-variable "network" {}
+variable "network" {
+  description = "the cidr of your vpc"
+}
 
-# the private subnets of your vpc
-variable "private_subnets" {}
+variable "private_subnets" {
+  type        = "list"
+  description = "the private subnets of your VPC"
+}
 
-# the public subnets of your vpc
-variable "public_subnets" {}
+variable "public_subnets" {
+  type        = "list"
+  description = "the public subnets of your VPC"
+}
 
-# a comma seperated list of extra security groups for master instances
 variable "extra_master_sec_groups" {
-  default = ""
+  type        = "list"
+  default     = []
+  description = "a list of extra security groups for master instances"
 }
 
-# a comma seperated list of extra security groups for internal elb
 variable "extra_master_internal_sec_groups" {
-  default = ""
+  type        = "list"
+  default     = []
+  description = "a list of extra security groups for internal elb"
 }
 
-# a comma seperated list of extra security groups for agent
 variable "extra_agent_sec_groups" {
-  default = ""
+  type        = "list"
+  default     = []
+  description = "a list of extra security groups for private agents"
 }
 
-# a comma seperated list of extra security groups for public agents
 variable "extra_public_agent_sec_groups" {
-  default = ""
+  type        = "list"
+  default     = []
+  description = "a list of extra security groups for public agents"
 }
 
-# comma seperated list of the AZs to deploy into
 variable "region_azs" {
-  default = "a,b,c"
+  type        = "list"
+  default     = ["a", "b", "c"]
+  description = "the list of AZs to deploy into"
 }
 
-# the ami to use (must be coreos)
 variable "coreos_ami" {
-  default = "ami-6160910c"
+  description = "the ami to use (must be coreos), defaults to latest coreos"
+  default     = ""
 }
 
-# the name of the IAM ssh key used
-variable "key_name" {}
+variable "key_name" {
+  description = "the name of the IAM ssh key"
+}
 
-# the exhibitor bucket
-variable "exhibitor_bucket" {}
+variable "bucket" {
+  description = "the bucket for exhibitor and bootstrapping"
+}
 
-# the bootstrap bucket
-variable "bootstrap_bucket" {}
-
-# the root volume size for master
 variable "master_root_volume_size" {
-  default = 20
+  default     = 20
+  description = "root volume size for master instances"
 }
 
-# the root volume size for master
 variable "agent_root_volume_size" {
-  default = 20
+  description = "root volume size for public agent instances"
+  default     = 20
 }
 
 variable "public_agent_root_volume_size" {
-  default = 20
+  description = "root volume size for private agent instances"
+  default     = 20
 }
 
-# the number of masters
 variable "master_count" {
   default = 3
 }
@@ -126,14 +134,18 @@ variable "public_agent_cloud_config_template" {
   default = ""
 }
 
-variable "dcos_url" {
-  description = "the dcos_generate_config.sh package to use, defaults to https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh, which will be latest dcos version"
-  default     = "https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh"
+variable "dcos_version" {
+  description = "the version of DCOS to install, must be a stable released version (otherwise use dcos_url and arbitrary version here)"
 }
 
-variable "cluster_version" {
-  description = "A version number of your cluster, bump this if you want to force an upgrade"
-  default     = "1"
+variable "dcos_url" {
+  description = "the dcos_generate_config.sh package to use, defaults to https://downloads.dcos.io/dcos/stable/${DCOS_VERSION}/dcos_generate_config.sh"
+  default     = ""
+}
+
+variable "bootstrap_role_arn" {
+  description = "an arn to assume when uploading the bootstrap package, if not provided, will use instance creds"
+  default     = ""
 }
 
 variable "bootstrap_build_script_path" {
@@ -174,4 +186,9 @@ variable "agent_idle_timeout" {
 variable "public_agent_idle_timeout" {
   default     = 60
   description = "The number of seconds before timing out idle sockets for public agent ELB"
+}
+
+variable "master_ssl_arn" {
+  default     = ""
+  description = "an SSL arn to apply to the master public ELB"
 }

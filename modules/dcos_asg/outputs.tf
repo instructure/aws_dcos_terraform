@@ -1,11 +1,7 @@
 output "launch_config" {
-  value = "${aws_launch_configuration.dcos_lc.id}"
+  value = "${aws_launch_configuration.cluster.id}"
 }
 
 output "asg" {
-  value = "${aws_autoscaling_group.dcos_asg.id}"
-}
-
-output "sec_group" {
-  value = "${aws_security_group.primary.id}"
+  value = "${aws_autoscaling_group.cluster.id}"
 }

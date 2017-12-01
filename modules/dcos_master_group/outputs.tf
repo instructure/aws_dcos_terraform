@@ -6,10 +6,6 @@ output "asg" {
   value = "${module.master_asg.asg}"
 }
 
-output "asg_sec_group" {
-  value = "${module.master_asg.sec_group}"
-}
-
 output "role_arn" {
   value = "${module.master_role.role_arn}"
 }

@@ -4,8 +4,9 @@ dest = "genconf/config.yaml"
 keys = [
   "dcos/bootstrap/url",
   "dcos/cluster/name",
-  "dcos/exhibitor/bucket",
+  "dcos/bucket",
   "dcos/exhibitor/prefix",
   "dcos/exhibitor/address",
-  "dcos/aws/region"
+  "dcos/aws/region",
+  "dcos/num/masters"
 ]

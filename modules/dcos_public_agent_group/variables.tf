@@ -1,52 +1,62 @@
-# the aws region to deploy in
-variable "aws_region" {
-  default = "us-east-1"
+variable "region" {
+  description = "the aws region to deploy in"
+  default     = "us-east-1"
 }
 
-# comma seperated list of the AZs to deploy into
 variable "region_azs" {
-  default = "a,b,c"
+  type        = "list"
+  description = "lsit of AZs to deploy into"
+  default     = ["a", "b", "c"]
 }
 
-# the vpc to launch the group into
+variable "network" {
+  description = "the cidr of your vpc"
+}
+
 variable "vpc_id" {}
 
-# the cidr of the vpc
-variable "network" {}
+variable "instance_subnets" {
+  description = "the subnets to launch the public agent instances into"
+  type        = "list"
+}
 
-# the subnets to launch the master instances into,
-# if you want your public nodes to be actually public, set them to public subnets
-variable "instance_subnets" {}
+variable "elb_subnets" {
+  description = "the subnets to launch the public ELB into"
+  type        = "list"
+}
 
-# the subnets to launch the elb into
-variable "elb_subnets" {}
+variable "cluster_name" {
+  description = "the name of the environment"
+}
+
+variable "coreos_ami" {
+  description = "the ami to use (must be coreos), defaults to latest core-os image"
+  default     = ""
+}
+
+variable "instance_type" {
+  description = "the instance to be used"
+  default     = "r3.xlarge"
+}
+
+variable "key_name" {
+  description = "the name of the IAM ssh key used"
+}
+
+variable "default_security_group" {
+  description = "the default security group name (contains common settings for all instances)"
+}
 
 # if you want the the lb associated to not actually be public... set this
 variable "internal_lb" {
   default = false
 }
 
-# the name of the environment
-variable "env_name" {}
-
-# the ami to use (must be coreos)
-variable "coreos_ami" {
-  default = "ami-6160910c"
+variable "extra_security_groups" {
+  description = "any extra security groups to be applied"
+  type        = "list"
+  default     = []
 }
-
-# the instance to be used
-variable "instance_type" {
-  default = "r3.xlarge"
-}
-
-# the name of the IAM ssh key used
-variable "key_name" {}
-
-# the default security group name (contains common settings for all instances)
-variable "default_security_group" {}
-
-# any extra security groups to be applied, comma seperated
-variable "extra_security_groups" {}
 
 # the size of the root volume
 variable "root_volume_size" {
@@ -74,15 +84,24 @@ variable "cloud_config_template" {
   default = ""
 }
 
-# the url to the DCOS package to download
-variable "dcos_install_url" {}
-
 # the work bucket for temporary objects
 variable "work_bucket" {}
 
 # the work prefix to use for temporary work objects
 variable "work_prefix" {
   default = "work"
+}
+
+variable "bucket_name" {
+  description = "the primary bucket for bootstrap"
+}
+
+variable "dcos_version" {
+  description = "the version of dcos"
+}
+
+variable "dcos_install_path" {
+  description = "the s3 path where the DCOS install is located"
 }
 
 variable "http_instance_port" {

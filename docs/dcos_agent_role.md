@@ -1,21 +1,21 @@
 
 ## Inputs
 
-| Name | Description | Default | Required |
-|------|-------------|:-----:|:-----:|
-| role_name |  | `""` | no |
-| env_name |  | - | yes |
-| agent_type |  | `"combined"` | no |
-| work_bucket |  | - | yes |
-| work_prefix |  | `"work"` | no |
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| agent_type |  | string | `combined` | no |
+| cluster_name |  | string | - | yes |
+| role_name |  | string | `` | no |
+| work_bucket |  | string | - | yes |
+| work_prefix |  | string | `work` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| role_id |  |
-| role_arn |  |
-| role_name |  |
 | instance_profile_arn |  |
 | primary_policy_name |  |
+| role_arn |  |
+| role_id |  |
+| role_name |  |
 

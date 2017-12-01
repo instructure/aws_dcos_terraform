@@ -12,7 +12,8 @@ function fmtAndValidate() {
     return 1
   fi
 
-  terraform validate $1
+  terraform init $1
+  terraform validate --check-variables=false $1
 }
 
 echo "checking terraform"

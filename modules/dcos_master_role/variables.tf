@@ -2,7 +2,7 @@ variable "role_name" {
   default = ""
 }
 
-variable "env_name" {}
+variable "cluster_name" {}
 
 variable "exhibitor_bucket" {}
 

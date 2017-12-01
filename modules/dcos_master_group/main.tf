@@ -1,6 +1,6 @@
 module "master_public_lb" {
   source                 = "../dcos_lb"
-  env_name               = "${var.env_name}"
+  cluster_name           = "${var.cluster_name}"
   name                   = "dcos-master"
   vpc_id                 = "${var.vpc_id}"
   network                = "${var.network}"
@@ -9,6 +9,7 @@ module "master_public_lb" {
   default_security_group = "${var.default_security_group}"
   health_check_path      = "HTTP:5050/health"
   idle_timeout           = "${var.idle_timeout}"
+  ssl_arn                = "${var.ssl_arn}"
 }
 
 resource "aws_security_group_rule" "allow_all_http" {
@@ -31,7 +32,7 @@ resource "aws_security_group_rule" "allow_all_https" {
 
 module "master_role" {
   source           = "../dcos_master_role"
-  env_name         = "${var.env_name}"
+  cluster_name     = "${var.cluster_name}"
   exhibitor_bucket = "${var.exhibitor_bucket}"
   work_bucket      = "${var.work_bucket}"
   work_prefix      = "${var.work_prefix}"
@@ -39,31 +40,31 @@ module "master_role" {
 
 module "master_asg" {
   source                 = "../dcos_asg"
-  aws_region             = "${var.aws_region}"
+  region                 = "${var.region}"
   region_azs             = "${var.region_azs}"
-  vpc_id                 = "${var.vpc_id}"
   subnets                = "${var.private_subnets}"
   default_security_group = "${var.default_security_group}"
 
-  env_name = "${var.env_name}"
-  name     = "dcos-master"
+  cluster_name = "${var.cluster_name}"
 
-  elbs                  = "${var.master_internal_lb},${module.master_public_lb.elb}"
+  load_balancers        = ["${var.master_internal_lb}", "${module.master_public_lb.elb}"]
   dcos_role             = "master"
   cloud_config_template = "${var.cloud_config_template}"
-  dcos_install_url      = "${var.dcos_install_url}"
+  bucket_name           = "${var.bucket_name}"
+  dcos_version          = "${var.dcos_version}"
+  dcos_install_path     = "${var.dcos_install_path}"
 
-  role_arn = "${module.master_role.instance_profile_arn}"
+  iam_role_name = "${module.master_role.role_name}"
 
   health_check_type         = "ELB"
   health_check_grace_period = 900
 
-  key_name              = "${var.key_name}"
-  extra_security_groups = "${var.extra_security_groups}"
-  coreos_ami            = "${var.coreos_ami}"
-  instance_type         = "${var.instance_type}"
-  root_volume_size      = "${var.root_volume_size}"
-  max_size              = "${var.max_size}"
-  min_size              = "${var.min_size}"
-  desired_capacity      = "${var.desired_capacity}"
+  key_name         = "${var.key_name}"
+  security_groups  = "${var.extra_security_groups}"
+  coreos_ami       = "${var.coreos_ami}"
+  instance_type    = "${var.instance_type}"
+  root_volume_size = "${var.root_volume_size}"
+  max_size         = "${var.max_size}"
+  min_size         = "${var.min_size}"
+  desired_capacity = "${var.desired_capacity}"
 }

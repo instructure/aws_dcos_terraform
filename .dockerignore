@@ -1,1 +1,3 @@
 .git
+**/.terraform
+modules/dcos_bootstrap/scripts/genconf/*

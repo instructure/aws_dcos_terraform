@@ -6,10 +6,6 @@ output "asg" {
   value = "${module.agent_asg.asg}"
 }
 
-output "asg_sec_group" {
-  value = "${module.agent_asg.sec_group}"
-}
-
 output "role_arn" {
   value = "${module.agent_role.role_arn}"
 }

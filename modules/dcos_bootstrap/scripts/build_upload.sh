@@ -3,7 +3,8 @@
 set -e
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-dcosDl=${DCOS_URL:-https://downloads.dcos.io/dcos/EarlyAccess/dcos_generate_config.sh}
+DCOS_VERSION="$6"
+dcosDl="${DCOS_URL:-https://downloads.dcos.io/dcos/stable/${DCOS_VERSION}/dcos_generate_config.sh}"
 
 die () {
   echo >&2 "$@"
@@ -27,4 +28,6 @@ docker run \
   -v ${DIR}/genconf:${DIR}/genconf \
   -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
   -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+  -e AWS_SECURITY_TOKEN=${AWS_SECURITY_TOKEN} \
+  -e AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN} \
   dcos_builder "$@"

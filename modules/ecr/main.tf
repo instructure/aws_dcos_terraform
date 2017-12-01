@@ -1,6 +1,6 @@
 module "cred_writer" {
   source             = "../ecr_cred_lambda"
-  env_name           = "${var.env_name}"
+  cluster_name       = "${var.cluster_name}"
   docker_cred_bucket = "${var.docker_cred_bucket}"
   registry_id        = "${var.account_id}"
 }

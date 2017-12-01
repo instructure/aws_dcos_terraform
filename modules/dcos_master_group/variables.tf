@@ -1,46 +1,48 @@
-# the aws region to deploy in
-variable "aws_region" {
+variable "region" {
   default = "us-east-1"
 }
 
-# comma seperated list of the AZs to deploy into
 variable "region_azs" {
-  default = "a,b,c"
+  type        = "list"
+  default     = ["a", "b", "c"]
+  description = "lits of AZs to deploy into"
 }
 
-variable "network" {}
+variable "network" {
+  description = "cidr of your VPC"
+}
 
 variable "vpc_id" {}
 
-# the public subnets to launch UI ELB, comma seperated, must be the same number of elements as region_azs
-variable "public_subnets" {}
-
-# the subnets to launch the master instances into
-variable "private_subnets" {}
-
-# the name of the environment
-variable "env_name" {}
-
-# the ami to use (must be coreos)
-variable "coreos_ami" {
-  default = "ami-6160910c"
+variable "public_subnets" {
+  type        = "list"
+  description = "the public subnets to launch the UI ELB, must be same order as region_azs"
 }
 
-# the instance to be used
+variable "private_subnets" {
+  type        = "list"
+  description = "the private subnets to launch the master instances into, must be same order as region_azs"
+}
+
+variable "cluster_name" {}
+
+variable "coreos_ami" {
+  default = ""
+}
+
 variable "instance_type" {
   default = "r3.xlarge"
 }
 
-# the name of the IAM ssh key used
 variable "key_name" {}
 
-# the default security group name (contains common settings for all instances)
 variable "default_security_group" {}
 
-# any extra security groups to be applied, comma seperated
-variable "extra_security_groups" {}
+variable "extra_security_groups" {
+  type    = "list"
+  default = []
+}
 
-# the size of the root volume
 variable "root_volume_size" {
   default = 20
 }
@@ -69,9 +71,6 @@ variable "cloud_config_template" {
   default = ""
 }
 
-# the url to the DCOS package to download
-variable "dcos_install_url" {}
-
 # the exhibitor bucket
 variable "exhibitor_bucket" {}
 
@@ -83,7 +82,24 @@ variable "work_prefix" {
   default = "work"
 }
 
+variable "bucket_name" {
+  description = "the primary bucket for bootstrap"
+}
+
+variable "dcos_version" {
+  description = "the version of dcos"
+}
+
+variable "dcos_install_path" {
+  description = "the s3 path where the DCOS install is located"
+}
+
 variable "idle_timeout" {
   default     = 60
   description = "The number of seconds before timing out idle sockets"
+}
+
+variable "ssl_arn" {
+  default     = ""
+  description = "an SSL arn to have the external ELB expose traffic to"
 }

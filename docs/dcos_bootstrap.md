@@ -1,22 +1,22 @@
 
 ## Inputs
 
-| Name | Description | Default | Required |
-|------|-------------|:-----:|:-----:|
-| aws_region |  | `"us-east-1"` | no |
-| master_elb_dns |  | - | yes |
-| env_name |  | - | yes |
-| exhibitor_bucket |  | - | yes |
-| bootstrap_bucket |  | - | yes |
-| bootstrap_dl_file |  | `"dcos_install.sh"` | no |
-| finished_file |  | `"__SUCCESS"` | no |
-| version | A version number of your cluster, bump this if you want to force an upgrade | `"1"` | no |
-| dcos_url | the dcos_generate_config.sh package to use, defaults to https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh, which will be latest dcos version | `"https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh"` | no |
-| build_script_path | the path to a custom build script for the bootstrap package | `""` | no |
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| bucket | the bucket to upload to | string | - | yes |
+| build_script_path | the path to a custom build script for the bootstrap package | string | `` | no |
+| cluster_name | the name of this cluster | string | - | yes |
+| dcos_url | the dcos_generate_config.sh package to use, defaults to https://downloads.dcos.io/dcos/stable/${DCOS_VERSION}/dcos_generate_config.sh | string | `` | no |
+| dcos_version | the version of DCOS to install, must be a stable released version (otherwise use dcos_url and arbitrary version here) | string | - | yes |
+| finished_file |  | string | `__SUCCESS` | no |
+| master_elb_dnsname |  | string | - | yes |
+| num_masters | the number of masters | string | `3` | no |
+| region |  | string | `us-east-1` | no |
+| role_arn | a role to assume when uploading the file | string | `` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| dcos_install_url |  |
+| dcos_install_path |  |
 

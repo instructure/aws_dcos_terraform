@@ -1,5 +1,5 @@
 # the name of the environment
-variable "env_name" {}
+variable "cluster_name" {}
 
 # the id of the vpc
 variable "vpc_id" {}
@@ -8,12 +8,15 @@ variable "vpc_id" {}
 variable "network" {}
 
 # the subnets to launch the ELB into (should be private subnets!)
-variable "private_subnets" {}
+variable "private_subnets" {
+  type = "list"
+}
 
 # the security group that all dcos components share
 variable "default_security_group" {}
 
 # a comma seperated list of extra security groups for the ELB
 variable "extra_security_groups" {
-  default = ""
+  type    = "list"
+  default = []
 }

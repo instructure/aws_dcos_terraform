@@ -3,7 +3,8 @@ variable "namespace" {
 }
 
 variable "repo_names" {
-  description = "comma seperated list of repo names, under the namespace"
+  type        = "list"
+  description = "list of repo names, under the namespace"
 }
 
 variable "account_id" {
@@ -11,7 +12,8 @@ variable "account_id" {
 }
 
 variable "users" {
-  description = "a comma seperated list of users to allow push access"
+  description = "a list of users to allow push access"
+  type        = "list"
 }
 
 variable "push_principal" {

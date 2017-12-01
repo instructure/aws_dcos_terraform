@@ -1,9 +1,9 @@
 // used by agents to contact the master, also could be used for internal hitting the admin portal
 resource "aws_elb" "master_internal_lb" {
-  name            = "${var.env_name}-dcos-master-internal"
-  subnets         = ["${split(",", var.private_subnets)}"]
+  name            = "${var.cluster_name}-dcos-master-internal"
+  subnets         = ["${var.private_subnets}"]
   internal        = true
-  security_groups = ["${var.default_security_group}", "${compact(concat(list(aws_security_group.master_internal_lb.id), split(",", var.extra_security_groups)))}"]
+  security_groups = ["${var.default_security_group}", "${compact(concat(list(aws_security_group.master_internal_lb.id), var.extra_security_groups))}"]
 
   // mesos-master
   listener {
@@ -64,7 +64,7 @@ resource "aws_elb" "master_internal_lb" {
 
 // LB for internal masters
 resource "aws_security_group" "master_internal_lb" {
-  name        = "${var.env_name}-master-internal-lb"
+  name        = "${var.cluster_name}-master-internal-lb"
   description = "Allow instances inside to hit the masters"
   vpc_id      = "${var.vpc_id}"
 }

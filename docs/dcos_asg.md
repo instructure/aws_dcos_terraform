@@ -1,40 +1,43 @@
 
 ## Inputs
 
-| Name | Description | Default | Required |
-|------|-------------|:-----:|:-----:|
-| aws_region | the aws region to deploy in | `"us-east-1"` | no |
-| region_azs | comma seperated list of the AZs to deploy into | `"a,b,c"` | no |
-| vpc_id | the vpc to launch the ASG in | - | yes |
-| subnets | the subnets to launch into, comma seperated, must be the same number of elements as region_azs | - | yes |
-| env_name | the name of the environment, used as prefix in creating ASG name | - | yes |
-| name | the name of the ASG, should be unique across asgs | - | yes |
-| coreos_ami | the AMI to use, must be a coreos AMI | `"ami-6160910c"` | no |
-| instance_type | the instance type to be used | `"r3.xlarge"` | no |
-| role_arn | the role instance profile that will be used for launching these instances | - | yes |
-| key_name | the name of the IAM ssh key used | - | yes |
-| default_security_group | the default security group name (contains common settings for all instances) | - | yes |
-| extra_security_groups | any extra security groups to be applied, comma seperated | `""` | no |
-| root_volume_size | the size of the root volume | `20` | no |
-| max_size | the max number of instances (for master ASGs, this MUST agree with min and desired) | `3` | no |
-| min_size | the min number of instances (for master ASGs, this MUST agree with max and desired) | `3` | no |
-| desired_capacity | the base number of instances (for master ASGs, this MUST agree with max and min) | `3` | no |
-| health_check_type | the type of health check to use to ascertain health in the ASG, ELB or EC2 | `"EC2"` | no |
-| health_check_grace_period | the amount of time to allow an instance after launching to become healthy | `600` | no |
-| elbs | any ELBS to register the instances to | `""` | no |
-| dcos_role | the dcos role to apply, master, slave, slave_public | - | yes |
-| cloud_config_template | the path to a cloud config, if not defined, uses the default template. Set a custom template by providing the text, see the source template for an example | `""` | no |
-| dcos_install_url | the url to the DCOS package to download | - | yes |
-| spot_price | set a spot price to create a spot ASG | `""` | no |
-| asg_wait_time | number of seconds to wait for a lifecycle hook for mesos to install | `360` | no |
-| override_asg_name | override the name of the ASG, which is useful for creating stable names to use with lifecycle hooks or other automation | `""` | no |
-| override_launch_hook_name | override the name of the hook used for initial lifecycle hooks, useful for automating with proper hooks | `""` | no |
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| asg_wait_time | number of seconds to wait for a lifecycle hook for mesos to install | string | `360` | no |
+| associate_public_ip_address |  | string | `false` | no |
+| bucket_name |  | string | - | yes |
+| cloud_config_template | the path to a cloud config, if not defined, uses the default template. Set a custom template by providing the text, see the source template for an example | string | `` | no |
+| cluster_name |  | string | - | yes |
+| coreos_ami | the AMI to use, defaults to latest coreos ami | string | `` | no |
+| dcos_install_path | the s3 path where the DCOS install is located | string | - | yes |
+| dcos_role |  | string | - | yes |
+| dcos_version |  | string | - | yes |
+| default_security_group | the default security group name (contains common settings for all instances) | string | - | yes |
+| desired_capacity |  | string | `1` | no |
+| enable_init_hook | enable a lifecycle to allow for the ASG to properly join the cluster before continuing | string | `false` | no |
+| group_prefix | override the prefix for asg and launch configs in this group, defaults to dcos-<cluster_name>-<dcos-role> | string | `` | no |
+| health_check_grace_period |  | string | `600` | no |
+| health_check_type |  | string | `EC2` | no |
+| iam_role_name |  | string | - | yes |
+| instance_type |  | string | `t2.large` | no |
+| key_name |  | string | `ops` | no |
+| load_balancers |  | list | `<list>` | no |
+| max_size |  | string | `1` | no |
+| min_size |  | string | `1` | no |
+| override_asg_name | override the name of the ASG, which is useful for creating stable names to use with lifecycle hooks or other automation | string | `` | no |
+| override_launch_hook_name | override the name of the hook used for initial lifecycle hooks, useful for automating with proper hooks | string | `` | no |
+| region |  | string | - | yes |
+| region_azs | list of the AZs to deploy into | list | `<list>` | no |
+| root_volume_size |  | string | `120` | no |
+| security_groups |  | list | `<list>` | no |
+| spot_price | set a spot price to create a spot ASG | string | `` | no |
+| subnets |  | list | `<list>` | no |
+| tags | a list of maps with properties for tags, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags | list | `<list>` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| launch_config |  |
 | asg |  |
-| sec_group |  |
+| launch_config |  |
 

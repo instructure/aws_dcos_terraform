@@ -1,77 +1,97 @@
-# the aws region to deploy in
-variable "aws_region" {
-  default = "us-east-1"
+variable "region" {
+  description = "the aws region to deploy in"
+  default     = "us-east-1"
 }
 
-# comma seperated list of the AZs to deploy into
 variable "region_azs" {
-  default = "a,b,c"
+  type        = "list"
+  description = "lsit of AZs to deploy into"
+  default     = ["a", "b", "c"]
 }
 
-variable "network" {}
+variable "network" {
+  description = "the cidr of your vpc"
+}
 
 variable "vpc_id" {}
 
-# the subnets to launch the master instances into
-variable "private_subnets" {}
+variable "private_subnets" {
+  description = "the subnets to launch the instances into"
+  type        = "list"
+}
 
-# the name of the environment
-variable "env_name" {}
+variable "cluster_name" {
+  description = "the name of the environment"
+}
 
-# the ami to use (must be coreos)
 variable "coreos_ami" {
-  default = "ami-6160910c"
+  description = "the ami to use (must be coreos), defaults to latest core-os image"
+  default     = ""
 }
 
-# the instance to be used
 variable "instance_type" {
-  default = "r3.xlarge"
+  description = "the instance to be used"
+  default     = "r3.xlarge"
 }
 
-# the name of the IAM ssh key used
-variable "key_name" {}
+variable "key_name" {
+  description = "the name of the IAM ssh key used"
+}
 
-# the default security group name (contains common settings for all instances)
-variable "default_security_group" {}
+variable "default_security_group" {
+  description = "the default security group name (contains common settings for all instances)"
+}
 
-# any extra security groups to be applied, comma seperated
-variable "extra_security_groups" {}
+variable "extra_security_groups" {
+  description = "any extra security groups to be applied"
+  type        = "list"
+  default     = []
+}
 
-# the size of the root volume
 variable "root_volume_size" {
-  default = 20
+  description = "the size of the root volume"
+  default     = 20
 }
 
-# the max number of instances (for master ASGs, this MUST agree with min and desired)
 variable "max_size" {
-  default = 3
+  description = "the max number of instances (for master ASGs, this MUST agree with min and desired)"
+  default     = 3
 }
 
-# the min number of instances (for master ASGs, this MUST agree with max and desired)
 variable "min_size" {
-  default = 3
+  description = "the min number of instances (for master ASGs, this MUST agree with max and desired)"
+  default     = 3
 }
 
-# the base number of instances (for master ASGs, this MUST agree with max and min)
 variable "desired_capacity" {
-  default = 3
+  description = "the base number of instances (for master ASGs, this MUST agree with max and min)"
+  default     = 3
 }
 
-# the path to a cloud config, if not defined, uses the default template. See the default template for
-# details and use that as a source for customizations
 variable "cloud_config_template" {
-  default = ""
+  description = "the path to a cloud config, if not defined, uses the default template. See the default template for details and use that as a source for customizations"
+  default     = ""
 }
 
-# the url to the DCOS package to download
-variable "dcos_install_url" {}
+variable "work_bucket" {
+  description = "the work bucket for temporary objects"
+}
 
-# the work bucket for temporary objects
-variable "work_bucket" {}
-
-# the work prefix to use for temporary work objects
 variable "work_prefix" {
-  default = "work"
+  description = "the work prefix to use for temporary work objects"
+  default     = "work"
+}
+
+variable "bucket_name" {
+  description = "the primary bucket for bootstrap"
+}
+
+variable "dcos_version" {
+  description = "the version of dcos"
+}
+
+variable "dcos_install_path" {
+  description = "the s3 path where the DCOS install is located"
 }
 
 variable "http_instance_port" {

@@ -15,5 +15,5 @@ output "instance_profile_arn" {
 }
 
 output "primary_policy_name" {
-  value = "${aws_iam_role_policy.agent_role_primary.name}"
+  value = "${aws_iam_role_policy.primary.name}"
 }

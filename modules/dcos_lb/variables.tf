@@ -1,4 +1,4 @@
-variable "env_name" {
+variable "cluster_name" {
   description = "the name of the environment"
 }
 
@@ -15,6 +15,7 @@ variable "network" {
 }
 
 variable "subnets" {
+  type        = "list"
   description = "the subnets to launch the ELB into, this determines whether public or private"
 }
 
@@ -28,8 +29,9 @@ variable "default_security_group" {
 }
 
 variable "extra_security_groups" {
-  default     = ""
-  description = "a comma seperated list of extra security groups for the ELB"
+  default     = []
+  type        = "list"
+  description = "a list of extra security groups for the ELB"
 }
 
 variable "health_check_path" {
@@ -55,4 +57,9 @@ variable "cross_zone_load_balancing" {
 variable "idle_timeout" {
   default     = 60
   description = "The number of seconds before timing out idle sockets"
+}
+
+variable "ssl_arn" {
+  default     = ""
+  description = "an optional SSL arn that will cause the ELB to do SSL termination, changes the https lb port to point to http_instance_port"
 }

@@ -1,0 +1,1 @@
+../modules/dcos_asg/templates/userdata.tpl

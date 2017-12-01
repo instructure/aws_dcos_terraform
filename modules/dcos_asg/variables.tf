@@ -1,93 +1,91 @@
-variable "aws_region" {
-  default     = "us-east-1"
-  description = "the aws region to deploy in"
+variable "region" {}
+variable "cluster_name" {}
+variable "dcos_role" {}
+variable "dcos_version" {}
+
+variable "dcos_install_path" {
+  description = "the s3 path where the DCOS install is located"
+}
+
+variable "bucket_name" {}
+
+variable "group_prefix" {
+  description = "override the prefix for asg and launch configs in this group, defaults to dcos-<cluster_name>-<dcos-role>"
+  default     = ""
+}
+
+variable "tags" {
+  type        = "list"
+  default     = []
+  description = "a list of maps with properties for tags, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags"
 }
 
 variable "region_azs" {
-  default     = "a,b,c"
-  description = "comma seperated list of the AZs to deploy into"
+  type        = "list"
+  default     = ["a", "b", "c"]
+  description = "list of the AZs to deploy into"
 }
 
-variable "vpc_id" {
-  description = "the vpc to launch the ASG in"
-}
-
-variable "subnets" {
-  description = "the subnets to launch into, comma seperated, must be the same number of elements as region_azs"
-}
-
-variable "env_name" {
-  description = "the name of the environment, used as prefix in creating ASG name"
-}
-
-variable "name" {
-  description = "the name of the ASG, should be unique across asgs"
+variable "root_volume_size" {
+  default = 120
 }
 
 variable "coreos_ami" {
-  default     = "ami-6160910c"
-  description = "the AMI to use, must be a coreos AMI"
+  default     = ""
+  description = "the AMI to use, defaults to latest coreos ami"
 }
 
 variable "instance_type" {
-  default     = "r3.xlarge"
-  description = "the instance type to be used"
-}
-
-variable "role_arn" {
-  description = "the role instance profile that will be used for launching these instances"
+  default = "t2.large"
 }
 
 variable "key_name" {
-  description = "the name of the IAM ssh key used"
+  default = "ops"
 }
 
 variable "default_security_group" {
   description = "the default security group name (contains common settings for all instances)"
 }
 
-variable "extra_security_groups" {
-  description = "any extra security groups to be applied, comma seperated"
-  default     = ""
+variable "subnets" {
+  type    = "list"
+  default = []
 }
 
-variable "root_volume_size" {
-  default     = 20
-  description = "the size of the root volume"
+variable "iam_role_name" {}
+
+variable "load_balancers" {
+  type    = "list"
+  default = []
 }
 
-variable "max_size" {
-  default     = 3
-  description = "the max number of instances (for master ASGs, this MUST agree with min and desired)"
-}
-
-variable "min_size" {
-  default     = 3
-  description = "the min number of instances (for master ASGs, this MUST agree with max and desired)"
-}
-
-variable "desired_capacity" {
-  default     = 3
-  description = "the base number of instances (for master ASGs, this MUST agree with max and min)"
+variable "security_groups" {
+  type    = "list"
+  default = []
 }
 
 variable "health_check_type" {
-  default     = "EC2"
-  description = "the type of health check to use to ascertain health in the ASG, ELB or EC2"
+  default = "EC2"
 }
 
 variable "health_check_grace_period" {
-  default     = 600
-  description = "the amount of time to allow an instance after launching to become healthy"
+  default = 600
 }
 
-variable "elbs" {
-  default     = ""
-  description = "any ELBS to register the instances to"
+variable "min_size" {
+  default = 1
 }
 
-variable "dcos_role" {
-  description = "the dcos role to apply, master, slave, slave_public"
+variable "max_size" {
+  default = 1
+}
+
+variable "desired_capacity" {
+  default = 1
+}
+
+variable "associate_public_ip_address" {
+  default = false
 }
 
 variable "cloud_config_template" {
@@ -95,13 +93,14 @@ variable "cloud_config_template" {
   description = "the path to a cloud config, if not defined, uses the default template. Set a custom template by providing the text, see the source template for an example"
 }
 
-variable "dcos_install_url" {
-  description = "the url to the DCOS package to download"
-}
-
 variable "spot_price" {
   default     = ""
   description = "set a spot price to create a spot ASG"
+}
+
+variable "enable_init_hook" {
+  default     = false
+  description = "enable a lifecycle to allow for the ASG to properly join the cluster before continuing"
 }
 
 variable "asg_wait_time" {

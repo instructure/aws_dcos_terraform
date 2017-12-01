@@ -11,5 +11,5 @@ output "lambda_role_name" {
 }
 
 output "lambda_arn" {
-  value = "${aws_lambda_function.ecr_cred_writer.arn}"
+  value = "${module.ecr_writer.lambda_arn}"
 }

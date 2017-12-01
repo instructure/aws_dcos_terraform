@@ -1,81 +1,77 @@
-resource "aws_iam_role" "ecr_cred_writer_role" {
-  name = "${var.env_name}-ecr-cred-writer"
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = [
+      "sts:AssumeRole",
+    ]
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
     }
-  ]
+  }
 }
-EOF
+
+resource "aws_iam_role" "ecr_cred_writer_role" {
+  name = "${var.cluster_name}-ecr-cred-writer"
+
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
+}
+
+locals {
+  docker_cred_def = "${format("%s/docker/creds.tar.gz", var.cluster_name)}"
+  docker_cred_key = "${coalesce(var.docker_cred_key, local.docker_cred_def)}"
+}
+
+data "aws_iam_policy_document" "primary" {
+  statement {
+    actions = [
+      "ecr:GetAuthorizationToken",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "s3:PutObject*",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${var.docker_cred_bucket}/${local.docker_cred_key}",
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "ecr_cred_write_policy" {
+  name = "${var.cluster_name}-write-to-ecr"
+  role = "${aws_iam_role.ecr_cred_writer_role.id}"
+
+  policy = "${data.aws_iam_policy_document.primary.json}"
 }
 
 data "template_file" "lambda_conf" {
   template = <<EOF
 {
   "targetBucket": "${var.docker_cred_bucket}",
-  "targetKey": "${coalesce(var.docker_cred_key, format("docker/%s/creds.tar.gz", var.env_name))}",
+  "targetKey": "${local.docker_cred_key}",
   "registryId": "${var.registry_id}"
 }
 EOF
 }
 
-resource "null_resource" "inject_build" {
-  triggers {
-    config_val = "${data.template_file.lambda_conf.rendered}"
-  }
-
-  provisioner "local-exec" {
-    command = "${coalesce(var.lambda_build_script, format("%s/files/ecr_writer/build_docker.sh", path.module))} ${var.env_name} '${data.template_file.lambda_conf.rendered}' ${format("s3://%s/docker/%s/%s", var.docker_cred_bucket, var.env_name, base64sha256(data.template_file.lambda_conf.rendered))}"
-  }
-}
-
-resource "aws_iam_role_policy" "ecr_cred_write_policy" {
-  name = "${var.env_name}-write-to-ecr"
-  role = "${aws_iam_role.ecr_cred_writer_role.id}"
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecr:GetAuthorizationToken"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
-      ],
-     "Resource": ["arn:aws:s3:::${var.docker_cred_bucket}/${coalesce(var.docker_cred_key, format("docker/%s/creds.tar.gz", var.env_name))}"]
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_lambda_function" "ecr_cred_writer" {
-  depends_on = ["null_resource.inject_build"]
-  s3_bucket  = "${var.docker_cred_bucket}"
-  s3_key     = "docker/${var.env_name}/${base64sha256(data.template_file.lambda_conf.rendered)}"
-
-  # work around https://github.com/hashicorp/terraform/issues/5673
-  s3_object_version = "null"
-  function_name     = "${var.env_name}-ecr-cred-writer"
-  handler           = "${var.handler_name}"
-  role              = "${coalesce(var.lambda_role, aws_iam_role.ecr_cred_writer_role.arn)}"
-  runtime           = "${var.runtime}"
+module "ecr_writer" {
+  source         = "github.com/instructure/tf_versioned_lambda//modules/node"
+  name           = "${var.cluster_name}_ecr_cred_writer"
+  role           = "${coalesce(var.lambda_role, aws_iam_role.ecr_cred_writer_role.arn)}"
+  handler        = "${var.handler_name}"
+  runtime        = "${var.runtime}"
+  package_bucket = "${var.docker_cred_bucket}"
+  package_prefix = "${var.cluster_name}/docker/builds"
+  lambda_dir     = "${format("%s/scripts/ecr_writer", path.module)}"
+  config_string  = "${data.template_file.lambda_conf.rendered}"
+  build_script   = "${var.lambda_build_script}"
 }
 
 resource "aws_cloudwatch_event_rule" "write_creds_tick" {
@@ -87,7 +83,7 @@ resource "aws_cloudwatch_event_rule" "write_creds_tick" {
 resource "aws_lambda_permission" "cw_call_ecr_cred_writer" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.ecr_cred_writer.function_name}"
+  function_name = "${module.ecr_writer.lambda_name}"
   principal     = "events.amazonaws.com"
   source_arn    = "${aws_cloudwatch_event_rule.write_creds_tick.arn}"
 }
@@ -95,5 +91,5 @@ resource "aws_lambda_permission" "cw_call_ecr_cred_writer" {
 resource "aws_cloudwatch_event_target" "write_creds_target" {
   rule      = "${aws_cloudwatch_event_rule.write_creds_tick.name}"
   target_id = "ecr_cred_writer"
-  arn       = "${aws_lambda_function.ecr_cred_writer.arn}"
+  arn       = "${module.ecr_writer.lambda_arn}"
 }

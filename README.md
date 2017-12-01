@@ -3,7 +3,7 @@ Terraform Modules for DC/OS on AWS
 
 An (almost) produciton ready set of modules for provisioning DC/OS in AWS.
 
-These modules implement the advanced installer (https://dcos.io/docs/1.7/administration/installing/custom/advanced/)
+These modules implement the advanced installer (https://dcos.io/docs/1.10/administration/installing/custom/advanced/)
 and using some clever terraform tricks, are able to do it in a single `terraform apply`
 
 ### What it does:
@@ -50,7 +50,7 @@ variable "route_table_ids" {
   default = "rtb-xxxxxx1,rtb-xxxxxx2"
   description = "comma seperated list of route tables"
 }
-variable "env_name" {
+variable "cluster_name" {
   default = "test_env"
   description = "the name of the environment, allows for multiple DC/OS clusters in a VPC"
 }
@@ -59,11 +59,13 @@ variable "network" {
   description = "the cidr of your VPC"
 }
 variable "public_subnets" {
-  default = "subnet-xxxxxx1,subnet-xxxxxx2"
+  default = ["subnet-xxxxxx1","subnet-xxxxxx2"]
+  type = "list"
   description = "a comma seperated list of public subnets in your VPC"
 }
 variable "private_subnets" {
-  default = "subnet-xxxxxx1,subnet-xxxxxx2"
+  default = ["subnet-xxxxxx1","subnet-xxxxxx2"]
+  type = "list"
   description = "a comma seperated list of private subnets in your VPC"
 }
 variable "key_name" {
@@ -71,7 +73,8 @@ variable "key_name" {
   description = "the ssh key name you want to use in provision hosts"
 }
 variable "region_azs" {
-  default = "a,b"
+  default = ["a","b"]
+  type = "list"
   description = "the availiability zones corresponding to your subnets"
 }
 provider "aws" {
@@ -87,14 +90,16 @@ module  "dcos_region" {
 
 module "dcos_core" {
   source = "github.com/instructure/aws_dcos_terraform//modules/dcos_core"
-  env_name = "${var.env_name}"
+  cluster_name = "${var.env_name}"
+  dcos_version = "1.10"
   vpc_id = "${var.vpc_id}"
   aws_region = "${var.aws_region}"
   network = "${var.network}" # cidr of VPC
   public_subnets = "${var.public_subnets}"
   private_subnets = "${var.private_subnets}"
-  bootstrap_bucket = "${module.dcos_region.bootstrap_bucket}"
-  exhibitor_bucket = "${module.dcos_region.exhibitor_bucket}"
+  #use the same bucket for both
+  bootstrap_bucket = "${module.dcos_region.bucket}"
+  exhibitor_bucket = "${module.dcos_region.bucket}"
   key_name = "${var.key_name}"
   region_azs = "${var.region_azs}"
 }
@@ -105,16 +110,18 @@ variable "namespace" {
   description = "the namespace you want to create repos under"
 }
 variable "repo_names" {
-  default = "my_app1,myapp_2"
-  description = "a comma seperated list of ECR repos you want to create"
+  default = ["my_app1","myapp_2"]
+  type = "list"
+  description = "a list of ECR repos you want to create"
 }
 variable "account_id" {
   default = "1234567890"
   description = "your aws account id"
 }
 variable "allowed_users" {
-  default = "bob,lisa,mark"
-  description = "comma seperated list of IAM users who should be able to push to the given repos"
+  default = ["bob","lisa","mark"]
+  type = "list"
+  description = "a list of IAM users who should be able to push to the given repos"
 }
 module "ecr" {
   source = "github.com/instructure/aws_dcos_terraform//modules/ecr"
@@ -170,9 +177,9 @@ be able to:
 
 The three current places this technique are used are:
 
-- `files/bootstrap/build_upload.sh`, 'dcos_bootstrap' call this script to build and upload the DC/OS package, set `build_script_path` to override
+- `files/scripts/build_upload.sh`, 'dcos_bootstrap' call this script to build and upload the DC/OS package, set `build_script_path` to override
 - `files/ecr_writer/build_docker.sh`, gets called to build the lambda function used in `ecr_cred_lambda` and upload it to s3, to override this, you need to provide `lambda_package_path` with a script that uploads a lambda package the specified s3 path
-- `files/user_data/cloud-config.yaml.tpl`, `dcos_asg` and `dcos_asg_spot` use this template for user data. Set `cloud_config_template` to a custom template to override.
+- `files/user_data.tpl`, `dcos_asg` and `dcos_asg_spot` use this template for user data. Set `cloud_config_template` to a custom template to override.
 
 # Notes
 
@@ -193,6 +200,9 @@ using either Docker For Mac of dinghy, on linux, it should just work
 - Create a 'root' module that replicates almost everything the default DC/OS cloudformation does
 - Add in Cloudwatch monitoring
 - Add in more machine options, such as spot block and spot fleet support
+
+### Old Versions
+Breaking changes are handeled by... not really handling them. It is recomended you pin your import of this TF to a sha.
 
 ### Contributing
 

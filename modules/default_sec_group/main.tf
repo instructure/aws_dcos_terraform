@@ -3,7 +3,7 @@
 # 2. communicate to each other on all ports
 # 3. open up ssh and icmp to the VPC
 resource "aws_security_group" "dcos_default" {
-  name        = "${var.env_name}-dcos-default"
+  name        = "${var.cluster_name}-dcos-default"
   description = "default SG for all dcos components"
   vpc_id      = "${var.vpc_id}"
 }

@@ -14,8 +14,8 @@ output "master_internal_sec_group" {
   value = "${module.master_internal_lb.sec_group}"
 }
 
-output "dcos_install_url" {
-  value = "${module.dcos_bootstrap.dcos_install_url}"
+output "dcos_install_path" {
+  value = "${module.dcos_bootstrap.dcos_install_path}"
 }
 
 output "master_launch_config" {
@@ -24,10 +24,6 @@ output "master_launch_config" {
 
 output "master_asg" {
   value = "${module.masters.asg}"
-}
-
-output "master_asg_sec_group" {
-  value = "${module.masters.asg_sec_group}"
 }
 
 output "master_role_arn" {
@@ -62,10 +58,6 @@ output "agent_asg" {
   value = "${module.agents.asg}"
 }
 
-output "agent_asg_sec_group" {
-  value = "${module.agents.asg_sec_group}"
-}
-
 output "agent_role_arn" {
   value = "${module.agents.role_arn}"
 }
@@ -96,10 +88,6 @@ output "public_agent_launch_config" {
 
 output "public_agent_asg" {
   value = "${module.public_agents.asg}"
-}
-
-output "public_agent_asg_sec_group" {
-  value = "${module.public_agents.asg_sec_group}"
 }
 
 output "public_agent_role_arn" {

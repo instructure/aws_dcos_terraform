@@ -1,9 +1,10 @@
 # This ELB is primarily used for balancing for instances of marathon-lb or adminrouter, so we forward just http and https in tcp mode
-resource "aws_elb" "lb" {
-  name            = "${var.env_name}-${var.name}"
-  subnets         = ["${split(",", var.subnets)}"]
+resource "aws_elb" "lb-nossl" {
+  count           = "${var.ssl_arn == "" ? 1 : 0}"
+  name            = "dcos-${var.cluster_name}-${var.name}"
+  subnets         = ["${var.subnets}"]
   internal        = "${var.internal_lb}"
-  security_groups = ["${var.default_security_group}", "${compact(concat(list(aws_security_group.lb.id), split(",", var.extra_security_groups)))}"]
+  security_groups = ["${var.default_security_group}", "${compact(concat(list(aws_security_group.lb.id), var.extra_security_groups))}"]
 
   // haproxy tcp
   listener {
@@ -33,9 +34,46 @@ resource "aws_elb" "lb" {
   }
 }
 
+resource "aws_elb" "lb-ssl" {
+  count           = "${var.ssl_arn == "" ? 0 : 1}"
+  name            = "dcos-${var.cluster_name}-${var.name}"
+  subnets         = ["${var.subnets}"]
+  internal        = "${var.internal_lb}"
+  security_groups = ["${var.default_security_group}", "${compact(concat(list(aws_security_group.lb.id), var.extra_security_groups))}"]
+
+  // TODO: for now, disable http when we have an SSL cert
+  /*
+  listener {
+    instance_port     = "${var.http_instance_port}"
+    instance_protocol = "tcp"
+    lb_port           = 80
+    lb_protocol       = "tcp"
+  }*/
+
+  // use ELB to terminate SSL
+  listener {
+    instance_port      = "${var.http_instance_port}"
+    instance_protocol  = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    ssl_certificate_id = "${var.ssl_arn}"
+  }
+
+  cross_zone_load_balancing = "${var.cross_zone_load_balancing}"
+  idle_timeout              = "${var.idle_timeout}"
+
+  health_check {
+    target              = "${var.health_check_path}"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    interval            = 30
+    timeout             = 5
+  }
+}
+
 resource "aws_security_group" "lb" {
-  name        = "${var.env_name}-${var.name}-agent-lb"
-  description = "sec group for the ${var.env_name}-${var.name} ELB"
+  name        = "dcos-${var.cluster_name}-${var.name}-agent-lb"
+  description = "sec group for the ${var.cluster_name}-${var.name} ELB"
   vpc_id      = "${var.vpc_id}"
 }
 

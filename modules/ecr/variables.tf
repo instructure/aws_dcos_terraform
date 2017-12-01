@@ -1,4 +1,4 @@
-variable "env_name" {}
+variable "cluster_name" {}
 
 // the bucket to write creds to
 variable "docker_cred_bucket" {
@@ -10,7 +10,8 @@ variable "namespace" {
 }
 
 variable "repo_names" {
-  description = "comma seperated list of repo names, under the namespace"
+  type        = "list"
+  description = "list of repo names, under the namespace"
 }
 
 variable "account_id" {
@@ -18,7 +19,8 @@ variable "account_id" {
 }
 
 variable "users" {
-  description = "a comma seperated list of users to allow push access, if you won't want to whitelist specific users set to empty string (\"\") and set push_principal to *"
+  type        = "list"
+  description = "a list of users to allow push access, if you won't want to whitelist specific users set to empty string (\"\") and set push_principal to *"
 }
 
 variable "push_principal" {

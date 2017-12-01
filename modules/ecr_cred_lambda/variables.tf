@@ -1,11 +1,11 @@
-variable "env_name" {}
+variable "cluster_name" {}
 
 variable "docker_cred_bucket" {
   description = "the bucket to write creds to"
 }
 
 variable "docker_cred_key" {
-  description = "by default, we write to /docker/{env_name}/creds.tar.gz, but you can set this and write to a different path in s3"
+  description = "by default, we write to ${cluster_name}/docker/creds.tar.gz, but you can set this and write to a different path in s3"
   default     = ""
 }
 
@@ -31,7 +31,7 @@ variable "num_hours_tick" {
 
 variable "runtime" {
   description = "the runtime of the lambda function"
-  default     = "nodejs4.3"
+  default     = "nodejs6.10"
 }
 
 variable "registry_id" {

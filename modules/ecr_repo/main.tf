@@ -1,6 +1,6 @@
 resource "aws_ecr_repository" "repo" {
-  name  = "${format("%s/%s", var.namespace, element(split(",", var.repo_names), count.index))}"
-  count = "${length(split(",", var.repo_names))}"
+  name  = "${format("%s/%s", var.namespace, element(var.repo_names, count.index))}"
+  count = "${length(var.repo_names)}"
 }
 
 # the monstorsity of a interpolation looks really bad... but its actually not too horrible
@@ -8,7 +8,7 @@ resource "aws_ecr_repository" "repo" {
 # if it isn't define, we still wrap in quotes but then replace empty quotes with an empty string
 # so we fall back to users, in which case we split, format in an ARN, and rejoin with comma
 resource "aws_ecr_repository_policy" "ecr_access" {
-  count      = "${length(split(",", var.repo_names))}"
+  count      = "${length(var.repo_names)}"
   repository = "${element(aws_ecr_repository.repo.*.name, count.index)}"
 
   policy = <<EOF
@@ -32,7 +32,7 @@ resource "aws_ecr_repository_policy" "ecr_access" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          ${coalesce(replace(format("\"%s\"", var.push_principal), "\"\"", ""), join(", ", formatlist("\"arn:aws:iam::${var.account_id}:user/%s\"", split(",", var.users))))}
+          ${coalesce(replace(format("\"%s\"", var.push_principal), "\"\"", ""), join(", ", formatlist("\"arn:aws:iam::${var.account_id}:user/%s\"", var.users)))}
         ]
       },
       "Action": [

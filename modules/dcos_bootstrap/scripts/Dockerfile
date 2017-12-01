@@ -1,14 +1,14 @@
 FROM ubuntu:16.04
 
 ENV CONFD_VERSION  0.11.0
-ARG DCOS_URL=https://downloads.dcos.io/dcos/EarlyAccess/dcos_generate_config.sh
+ARG DCOS_URL
 ENV DCOS_URL $DCOS_URL
 ENV DCOS_NAME dcos_generate_config.sh
 
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
   echo "deb http://apt.dockerproject.org/repo ubuntu-xenial main" > /etc/apt/sources.list.d/docker.list && \
   apt-get update && \
-  apt-get install curl docker-engine python-pip -y && \
+  apt-get install curl docker-engine python-pip jq -y && \
   pip install awscli
 
 RUN mkdir -p /usr/local/bin/ && \

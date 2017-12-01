@@ -3,11 +3,11 @@ cluster_name: {{getv "/dcos/cluster/name"}}
 exhibitor_storage_backend: aws_s3
 aws_region: {{getv "/dcos/aws/region"}}
 exhibitor_explicit_keys: 'false'
-s3_bucket: {{getv "/dcos/exhibitor/bucket"}}
+s3_bucket: {{getv "/dcos/bucket"}}
 s3_prefix: {{getv "/dcos/exhibitor/prefix"}}
 ip_detect_filename: /genconf/ip-detect
 master_discovery: master_http_loadbalancer
 exhibitor_address: {{getv "/dcos/exhibitor/address"}}
-num_masters: 3
+num_masters: {{getv "/dcos/num/masters"}}
 resolvers:
 - 169.254.169.253
