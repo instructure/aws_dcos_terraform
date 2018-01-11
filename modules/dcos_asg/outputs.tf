@@ -3,5 +3,5 @@ output "launch_config" {
 }
 
 output "asg" {
-  value = "${aws_autoscaling_group.cluster.id}"
+  value = "${element(coalescelist(aws_autoscaling_group.cluster_hook.*.id, aws_autoscaling_group.cluster_no_hook.*.id), 0)}"
 }

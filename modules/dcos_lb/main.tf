@@ -58,10 +58,8 @@ resource "aws_elb" "lb-ssl" {
     lb_protocol        = "https"
     ssl_certificate_id = "${var.ssl_arn}"
   }
-
   cross_zone_load_balancing = "${var.cross_zone_load_balancing}"
   idle_timeout              = "${var.idle_timeout}"
-
   health_check {
     target              = "${var.health_check_path}"
     healthy_threshold   = 2
