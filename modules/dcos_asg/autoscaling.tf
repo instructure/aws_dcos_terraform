@@ -27,7 +27,6 @@ resource "aws_autoscaling_group" "cluster_hook" {
     lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
   }
 
-
   lifecycle {
     create_before_destroy = true
   }
