@@ -117,3 +117,8 @@ variable "override_launch_hook_name" {
   default     = ""
   description = "override the name of the hook used for initial lifecycle hooks, useful for automating with proper hooks"
 }
+
+variable "lifecycle_action_result" {
+  default     = "CONTINUE"
+  description = "At the conclusion of a lifecycle hook, CONTINUE indicates that your actions were successful, and that the instance into service, whereas ABANDON indicates that your actions were unsuccessful, and that the instance can be terminated."
+}

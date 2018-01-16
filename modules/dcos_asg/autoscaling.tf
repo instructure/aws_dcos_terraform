@@ -22,7 +22,7 @@ resource "aws_autoscaling_group" "cluster_hook" {
 
   initial_lifecycle_hook {
     name                 = "${coalesce(var.override_launch_hook_name, format("%s-%s-launch", var.cluster_name, var.dcos_role))}"
-    default_result       = "CONTINUE"
+    default_result       = "${var.lifecycle_action_result}"
     heartbeat_timeout    = "${var.asg_wait_time}"
     lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
   }
