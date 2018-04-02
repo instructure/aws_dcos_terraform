@@ -9,7 +9,6 @@ ip_detect_filename: /genconf/ip-detect
 master_discovery: master_http_loadbalancer
 exhibitor_address: {{getv "/dcos/exhibitor/address"}}
 num_masters: {{getv "/dcos/num/masters"}}
-fault_domain_enabled: true
 fault_domain_detect_filename: /genconf/fault-domain-detect
 resolvers:
 - 169.254.169.253
