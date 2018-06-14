@@ -17,3 +17,8 @@ variable "endpoint_id" {
   description = "an existing vpc s3 endpoint to use, disables creating a vpc endpoint"
   default     = ""
 }
+
+variable "full_bucket_name" {
+  default     = ""
+  description = "specify the full s3 bucket name if you require"
+}
