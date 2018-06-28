@@ -21,6 +21,7 @@ data "aws_iam_policy_document" "primary" {
   statement {
     actions = [
       "ec2:CreateTags",
+      "ec2:DescribeTags",
       "ec2:DescribeInstances",
       "ec2:CreateVolume",
       "ec2:DeleteVolume",
