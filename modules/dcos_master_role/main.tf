@@ -69,6 +69,7 @@ data "aws_iam_policy_document" "primary" {
     actions = [
       "ec2:DescribeKeyPairs",
       "ec2:DescribeSubnets",
+      "ec2:DescribeTags",
       "autoscaling:DescribeLaunchConfigurations",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:DescribeAutoScalingGroups",
