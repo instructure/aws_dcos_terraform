@@ -192,3 +192,27 @@ variable "master_ssl_arn" {
   default     = ""
   description = "an SSL arn to apply to the master public ELB"
 }
+
+variable "common_tags" {
+  type        = "list"
+  default     = []
+  description = "a list of maps with properties for tags in all DC/OS ASGs, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags"
+}
+
+variable "master_tags" {
+  type        = "list"
+  default     = []
+  description = "a list of maps with properties for tags in master ASG, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags"
+}
+
+variable "agent_tags" {
+  type        = "list"
+  default     = []
+  description = "a list of maps with properties for tags in agent ASG, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags"
+}
+
+variable "public_agent_tags" {
+  type        = "list"
+  default     = []
+  description = "a list of maps with properties for tags in public_agent ASG, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags"
+}

@@ -108,3 +108,9 @@ variable "idle_timeout" {
   default     = 60
   description = "The number of seconds before timing out idle sockets"
 }
+
+variable "tags" {
+  type        = "list"
+  default     = []
+  description = "a list of maps with properties for tags, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags"
+}

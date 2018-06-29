@@ -54,6 +54,7 @@ module "masters" {
   work_bucket            = "${var.bucket}"
   idle_timeout           = "${var.master_idle_timeout}"
   ssl_arn                = "${var.master_ssl_arn}"
+  tags                   = ["${concat(var.common_tags, var.master_tags)}"]
 }
 
 module "agents" {
@@ -81,6 +82,7 @@ module "agents" {
   http_instance_port     = "${var.agent_http_instance_port}"
   https_instance_port    = "${var.agent_https_instance_port}"
   idle_timeout           = "${var.agent_idle_timeout}"
+  tags                   = ["${concat(var.common_tags, var.agent_tags)}"]
 }
 
 module "public_agents" {
@@ -109,4 +111,5 @@ module "public_agents" {
   http_instance_port     = "${var.public_agent_http_instance_port}"
   https_instance_port    = "${var.public_agent_https_instance_port}"
   idle_timeout           = "${var.public_agent_idle_timeout}"
+  tags                   = ["${concat(var.common_tags, var.public_agent_tags)}"]
 }

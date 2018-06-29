@@ -10,10 +10,12 @@
 | agent_idle_timeout | The number of seconds before timing out idle sockets for agent ELB | string | `60` | no |
 | agent_instance_type |  | string | `r3.xlarge` | no |
 | agent_root_volume_size | root volume size for public agent instances | string | `20` | no |
+| agent_tags | a list of maps with properties for tags in agent ASG, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags | list | `<list>` | no |
 | bootstrap_build_script_path | path to a custom build script for building and upload a dcos install package | string | `` | no |
 | bootstrap_role_arn | an arn to assume when uploading the bootstrap package, if not provided, will use instance creds | string | `` | no |
 | bucket | the bucket for exhibitor and bootstrapping | string | - | yes |
 | cluster_name | the name of the environment | string | - | yes |
+| common_tags | a list of maps with properties for tags in all DC/OS ASGs, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags | list | `<list>` | no |
 | coreos_ami | the ami to use (must be coreos), defaults to latest coreos | string | `` | no |
 | dcos_url | the dcos_generate_config.sh package to use, defaults to https://downloads.dcos.io/dcos/stable/${DCOS_VERSION}/dcos_generate_config.sh | string | `` | no |
 | dcos_version | the version of DCOS to install, must be a stable released version (otherwise use dcos_url and arbitrary version here) | string | - | yes |
@@ -28,6 +30,7 @@
 | master_instance_type |  | string | `r3.xlarge` | no |
 | master_root_volume_size | root volume size for master instances | string | `20` | no |
 | master_ssl_arn | an SSL arn to apply to the master public ELB | string | `` | no |
+| master_tags | a list of maps with properties for tags in master ASG, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags | list | `<list>` | no |
 | max_agent_count |  | string | `8` | no |
 | max_public_agent_count |  | string | `4` | no |
 | min_agent_count |  | string | `2` | no |
@@ -42,6 +45,7 @@
 | public_agent_idle_timeout | The number of seconds before timing out idle sockets for public agent ELB | string | `60` | no |
 | public_agent_instance_type |  | string | `` | no |
 | public_agent_root_volume_size | root volume size for private agent instances | string | `20` | no |
+| public_agent_tags | a list of maps with properties for tags in public_agent ASG, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags | list | `<list>` | no |
 | public_subnets | the public subnets of your VPC | list | - | yes |
 | region |  | string | - | yes |
 | region_azs | the list of AZs to deploy into | list | `<list>` | no |

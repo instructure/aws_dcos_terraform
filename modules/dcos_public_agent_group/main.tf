@@ -64,4 +64,5 @@ module "agent_asg" {
   max_size         = "${var.max_size}"
   min_size         = "${var.min_size}"
   desired_capacity = "${var.desired_capacity}"
+  tags             = "${var.tags}"
 }

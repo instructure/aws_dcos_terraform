@@ -26,6 +26,7 @@
 | region_azs | lits of AZs to deploy into | list | `<list>` | no |
 | root_volume_size |  | string | `20` | no |
 | ssl_arn | an SSL arn to have the external ELB expose traffic to | string | `` | no |
+| tags | a list of maps with properties for tags, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags | list | `<list>` | no |
 | vpc_id |  | string | - | yes |
 | work_bucket | the work bucket for temporary objects | string | - | yes |
 | work_prefix | the work prefix to use for temporary work objects | string | `work` | no |

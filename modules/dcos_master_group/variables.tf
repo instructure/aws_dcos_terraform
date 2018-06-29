@@ -103,3 +103,9 @@ variable "ssl_arn" {
   default     = ""
   description = "an SSL arn to have the external ELB expose traffic to"
 }
+
+variable "tags" {
+  type        = "list"
+  default     = []
+  description = "a list of maps with properties for tags, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags"
+}

@@ -24,6 +24,7 @@
 | region | the aws region to deploy in | string | `us-east-1` | no |
 | region_azs | lsit of AZs to deploy into | list | `<list>` | no |
 | root_volume_size | the size of the root volume | string | `20` | no |
+| tags | a list of maps with properties for tags, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags | list | `<list>` | no |
 | vpc_id |  | string | - | yes |
 | work_bucket | the work bucket for temporary objects | string | - | yes |
 | work_prefix | the work prefix to use for temporary work objects | string | `work` | no |
