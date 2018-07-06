@@ -15,7 +15,7 @@ output "role_id" {
 }
 
 output "instance_profile_arn" {
-  value = "${module.agent_role.instance_profile_arn}"
+  value = "${module.agent_asg.instance_profile_arn}"
 }
 
 output "lb_dns" {

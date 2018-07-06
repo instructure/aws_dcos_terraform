@@ -13,7 +13,6 @@
 
 | Name | Description |
 |------|-------------|
-| instance_profile_arn |  |
 | primary_policy_name |  |
 | role_arn |  |
 | role_id |  |

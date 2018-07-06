@@ -12,6 +12,7 @@
 | default_security_group | the default security group name (contains common settings for all instances) | string | - | yes |
 | desired_capacity | the base number of instances (for master ASGs, this MUST agree with max and min) | string | `3` | no |
 | elb_subnets | the subnets to launch the public ELB into | list | - | yes |
+| enable_init_hook | enable a lifecycle to allow for the ASG to properly join the cluster before continuing | string | `false` | no |
 | extra_security_groups | any extra security groups to be applied | list | `<list>` | no |
 | http_instance_port | from port 80 on the LB, which backend port to hit | string | `80` | no |
 | https_instance_port | from port 443 on the LB, which backend port to hit | string | `443` | no |
@@ -20,9 +21,12 @@
 | instance_type | the instance to be used | string | `r3.xlarge` | no |
 | internal_lb | if you want the the lb associated to not actually be public... set this | string | `false` | no |
 | key_name | the name of the IAM ssh key used | string | - | yes |
+| lifecycle_action_result | At the conclusion of a lifecycle hook, CONTINUE indicates that your actions were successful, and that the instance into service, whereas ABANDON indicates that your actions were unsuccessful, and that the instance can be terminated. | string | `CONTINUE` | no |
 | max_size | the max number of instances (for master ASGs, this MUST agree with min and desired) | string | `3` | no |
 | min_size | the min number of instances (for master ASGs, this MUST agree with max and desired) | string | `3` | no |
 | network | the cidr of your vpc | string | - | yes |
+| override_asg_name | override the name of the ASG, which is useful for creating stable names to use with lifecycle hooks or other automation | string | `` | no |
+| override_launch_hook_name | override the name of the hook used for initial lifecycle hooks, useful for automating with proper hooks | string | `` | no |
 | region | the aws region to deploy in | string | `us-east-1` | no |
 | region_azs | lsit of AZs to deploy into | list | `<list>` | no |
 | root_volume_size | the size of the root volume | string | `20` | no |
