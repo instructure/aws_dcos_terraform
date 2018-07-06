@@ -21,6 +21,7 @@
 | iam_role_name |  | string | - | yes |
 | instance_type |  | string | `t2.large` | no |
 | key_name |  | string | `ops` | no |
+| lifecycle_action_result | At the conclusion of a lifecycle hook, CONTINUE indicates that your actions were successful, and that the instance into service, whereas ABANDON indicates that your actions were unsuccessful, and that the instance can be terminated. | string | `CONTINUE` | no |
 | load_balancers |  | list | `<list>` | no |
 | max_size |  | string | `1` | no |
 | min_size |  | string | `1` | no |

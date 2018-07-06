@@ -47,4 +47,9 @@ module "agent_asg" {
   min_size         = "${var.min_size}"
   desired_capacity = "${var.desired_capacity}"
   tags             = "${var.tags}"
+
+  enable_init_hook          = "${var.enable_init_hook}"
+  override_asg_name         = "${var.override_asg_name}"
+  override_launch_hook_name = "${var.override_launch_hook_name}"
+  lifecycle_action_result   = "${var.lifecycle_action_result}"
 }

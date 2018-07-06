@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 
     principals {
       type        = "Service"
-      identifiers = ["ec2.amazonaws.com", "ssm.amazonaws.com"]
+      identifiers = ["ec2.amazonaws.com", "ssm.amazonaws.com", "autoscaling.amazonaws.com"]
     }
   }
 }
@@ -62,6 +62,6 @@ resource "aws_iam_role_policy" "primary" {
 }
 
 resource "aws_iam_instance_profile" "agent_profile" {
-  name = "${var.cluster_name}-${var.agent_type}-agent-profile"
+  name = "dcos-${var.cluster_name}-${var.agent_type}-agent-primary"
   role = "${aws_iam_role.agent_role.name}"
 }

@@ -216,3 +216,63 @@ variable "public_agent_tags" {
   default     = []
   description = "a list of maps with properties for tags in public_agent ASG, see https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#tags"
 }
+
+variable "master_enable_init_hook" {
+  default     = false
+  description = "enable a lifecycle to allow for the ASG to properly join the cluster before continuing"
+}
+
+variable "master_override_asg_name" {
+  default     = ""
+  description = "override the name of the master ASG, which is useful for creating stable names to use with lifecycle hooks or other automation"
+}
+
+variable "master_override_launch_hook_name" {
+  default     = ""
+  description = "override the master name of the hook used for initial lifecycle hooks, useful for automating with proper hooks"
+}
+
+variable "master_lifecycle_action_result" {
+  default     = "CONTINUE"
+  description = "At the conclusion of a lifecycle hook, CONTINUE indicates that your actions were successful, and that the instance into service, whereas ABANDON indicates that your actions were unsuccessful, and that the instance can be terminated."
+}
+
+variable "agent_enable_init_hook" {
+  default     = false
+  description = "enable a lifecycle to allow for the ASG to properly join the cluster before continuing"
+}
+
+variable "agent_override_asg_name" {
+  default     = ""
+  description = "override the name of the agent ASG, which is useful for creating stable names to use with lifecycle hooks or other automation"
+}
+
+variable "agent_override_launch_hook_name" {
+  default     = ""
+  description = "override the agent name of the hook used for initial lifecycle hooks, useful for automating with proper hooks"
+}
+
+variable "agent_lifecycle_action_result" {
+  default     = "CONTINUE"
+  description = "At the conclusion of a lifecycle hook, CONTINUE indicates that your actions were successful, and that the instance into service, whereas ABANDON indicates that your actions were unsuccessful, and that the instance can be terminated."
+}
+
+variable "public_agent_enable_init_hook" {
+  default     = false
+  description = "enable a lifecycle to allow for the ASG to properly join the cluster before continuing"
+}
+
+variable "public_agent_override_asg_name" {
+  default     = ""
+  description = "override the name of the public_agent ASG, which is useful for creating stable names to use with lifecycle hooks or other automation"
+}
+
+variable "public_agent_override_launch_hook_name" {
+  default     = ""
+  description = "override the public_agent name of the hook used for initial lifecycle hooks, useful for automating with proper hooks"
+}
+
+variable "public_agent_lifecycle_action_result" {
+  default     = "CONTINUE"
+  description = "At the conclusion of a lifecycle hook, CONTINUE indicates that your actions were successful, and that the instance into service, whereas ABANDON indicates that your actions were unsuccessful, and that the instance can be terminated."
+}

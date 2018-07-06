@@ -11,15 +11,19 @@
 | dcos_version | the version of dcos | string | - | yes |
 | default_security_group |  | string | - | yes |
 | desired_capacity | the base number of instances (for master ASGs, this MUST agree with max and min) | string | `3` | no |
+| enable_init_hook | enable a lifecycle to allow for the ASG to properly join the cluster before continuing | string | `false` | no |
 | exhibitor_bucket | the exhibitor bucket | string | - | yes |
 | extra_security_groups |  | list | `<list>` | no |
 | idle_timeout | The number of seconds before timing out idle sockets | string | `60` | no |
 | instance_type |  | string | `r3.xlarge` | no |
 | key_name |  | string | - | yes |
+| lifecycle_action_result | At the conclusion of a lifecycle hook, CONTINUE indicates that your actions were successful, and that the instance into service, whereas ABANDON indicates that your actions were unsuccessful, and that the instance can be terminated. | string | `CONTINUE` | no |
 | master_internal_lb | The id of the internal lb | string | - | yes |
 | max_size | the max number of instances (for master ASGs, this MUST agree with min and desired) | string | `3` | no |
 | min_size | the min number of instances (for master ASGs, this MUST agree with max and desired) | string | `3` | no |
 | network | cidr of your VPC | string | - | yes |
+| override_asg_name | override the name of the ASG, which is useful for creating stable names to use with lifecycle hooks or other automation | string | `` | no |
+| override_launch_hook_name | override the name of the hook used for initial lifecycle hooks, useful for automating with proper hooks | string | `` | no |
 | private_subnets | the private subnets to launch the master instances into, must be same order as region_azs | list | - | yes |
 | public_subnets | the public subnets to launch the UI ELB, must be same order as region_azs | list | - | yes |
 | region |  | string | `us-east-1` | no |
