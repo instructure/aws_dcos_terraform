@@ -52,8 +52,8 @@ resource "aws_elb" "lb-ssl" {
 
   // use ELB to terminate SSL
   listener {
-    instance_port      = "${var.http_instance_port}"
-    instance_protocol  = "http"
+    instance_port      = "${var.https_instance_port}"
+    instance_protocol  = "https"
     lb_port            = 443
     lb_protocol        = "https"
     ssl_certificate_id = "${var.ssl_arn}"
