@@ -15,6 +15,11 @@ resource "aws_s3_bucket" "util_bucket" {
   bucket = "${local.bucket_name}"
   acl    = "private"
 
+  lifecycle_rule {
+    enabled                                = true
+    abort_incomplete_multipart_upload_days = 14
+  }
+
   // use a custom policy so that HTTP urls work inside the bucket to fetch utils!
   policy = <<EOF
 {
