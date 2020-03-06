@@ -62,7 +62,7 @@ EOF
 }
 
 module "ecr_writer" {
-  source         = "github.com/instructure/tf_versioned_lambda//modules/node"
+  source         = "github.com/instructure/tf_versioned_lambda?ref=final-0.11//modules/node"
   name           = "${var.cluster_name}_ecr_cred_writer"
   role           = "${coalesce(var.lambda_role, aws_iam_role.ecr_cred_writer_role.arn)}"
   handler        = "${var.handler_name}"
